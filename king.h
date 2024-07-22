@@ -7,7 +7,7 @@ using namespace std;
 
 class King: public ChessPiece {
     private:
-        bool isFirstMove = 1;
+        bool isFirstMove = numMoves == 0;
     public:
         King(bool);
 

@@ -10,6 +10,8 @@ class Board {
   ~Board();
 
   Piece getPiece(Position);
+  Move previousMove(); // need this for en passant to verfiy the previous move of the opponent's pawn
+  int numMoves(Position);
 };
 
 #endif

@@ -10,6 +10,7 @@ class Board;
 class ChessPiece{
   protected:
     Piece piece;
+    int numMoves = 0; // need this for en Passant and other operations
   public:
     ChessPiece(bool colour);
     
@@ -20,6 +21,9 @@ class ChessPiece{
     void rowCol(Position, Board*, vector<Position>&);
 
     virtual ~ChessPiece(){};
+
+    int getNumMoves();
+    void incrementMoves();
 };
 
 #endif
