@@ -3,11 +3,11 @@
 
 #include <vector>
 
-#include "Board.h"
-#include "Player.h"
+#include "board.h"
+#include "player.h"
 class Game {
  private:
-  board* b;
+  Board* b;
   Player* p1;
   Player* p2;
   std::vector<Board*> moveHistory;
