@@ -1,2 +1,2 @@
 # chess
-A project for CS247.
+Chess project for CS247.
