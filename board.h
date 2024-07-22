@@ -1,15 +1,15 @@
-#ifndef BOARD_H
-#define BOARD_H
-
+#ifndef BOARD_H_
+#define BOARD_H_
 #include <vector>
 
-#include "chesspiece.h"
+#include "types.h"
 
-class Board : public Observer {
- private:
-  Square squares[8][8];
-  std::vector<ChessPiece> whitePieces;
-  std::vector<ChessPiece> blackPieces;
-}
+class Board {
+ public:
+  Board();
+  ~Board();
+
+  Piece getPiece(Position);
+};
 
 #endif
