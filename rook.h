@@ -11,7 +11,7 @@ class Rook: public ChessPiece {
         Rook(bool);
 
         vector<Position> validMoves(Position, Board*) override;
-        Piece getType() override;
+        Piece getPiece() override;
 
         ~Rook(){}
 };

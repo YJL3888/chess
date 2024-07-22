@@ -13,6 +13,6 @@ vector<Position> Bishop::validMoves(Position p, Board* b){
     return locations;
 }
 
-Piece Bishop::getType(){
+Piece Bishop::getPiece(){
     return piece;
 }

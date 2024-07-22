@@ -11,7 +11,7 @@ class Pawn: public ChessPiece{
         Pawn(bool);
 
         vector<Position> validMoves(Position, Board*) override;
-        Piece getType() override;
+        Piece getPiece() override;
         
         ~Pawn(){};
 };

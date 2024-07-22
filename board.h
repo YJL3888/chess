@@ -8,7 +8,7 @@ class Board{
     Board();
     ~Board();
 
-    Piece getType(Position);
+    Piece getPiece(Position);
 };
 
 

@@ -8,7 +8,7 @@ Knight::Knight(bool colour): ChessPiece{colour} {
     piece.first = PieceType::Knight;
 }
 
-Piece Knight::getType(){
+Piece Knight::getPiece(){
     return piece;
 }
 
@@ -33,7 +33,7 @@ vector<Position> Knight::validMoves(Position p, Board* b){
     if(xplus2 && yplus1){
         potentialPos.first = static_cast<xlocation>(x+2);
         potentialPos.second = y+1; 
-        if(static_cast<int>(b->getType(potentialPos).first) == 0 || b->getType(p).second != b->getType(potentialPos).second){ // Empty or captures the opponent
+        if(static_cast<int>(b->getPiece(potentialPos).first) == 0 || b->getPiece(p).second != b->getPiece(potentialPos).second){ // Empty or captures the opponent
             locations.push_back(potentialPos); 
         }
     }
@@ -41,7 +41,7 @@ vector<Position> Knight::validMoves(Position p, Board* b){
     if(xplus2 && yminus1){
         potentialPos.first = static_cast<xlocation>(x+2);
         potentialPos.second = y-1;
-        if(static_cast<int>(b->getType(potentialPos).first) == 0 || b->getType(p).second != b->getType(potentialPos).second){
+        if(static_cast<int>(b->getPiece(potentialPos).first) == 0 || b->getPiece(p).second != b->getPiece(potentialPos).second){
             locations.push_back(potentialPos); 
         }
     }
@@ -49,7 +49,7 @@ vector<Position> Knight::validMoves(Position p, Board* b){
     if(xminus2 && yplus1){
         potentialPos.first = static_cast<xlocation>(x-2);
         potentialPos.second = y+1;
-        if(static_cast<int>(b->getType(potentialPos).first) == 0 || b->getType(p).second != b->getType(potentialPos).second){
+        if(static_cast<int>(b->getPiece(potentialPos).first) == 0 || b->getPiece(p).second != b->getPiece(potentialPos).second){
             locations.push_back(potentialPos); 
         }
     }
@@ -57,7 +57,7 @@ vector<Position> Knight::validMoves(Position p, Board* b){
     if(xminus2 && yminus1){
         potentialPos.first = static_cast<xlocation>(x-2);
         potentialPos.second = y-1;
-        if(static_cast<int>(b->getType(potentialPos).first) == 0 || b->getType(p).second != b->getType(potentialPos).second){
+        if(static_cast<int>(b->getPiece(potentialPos).first) == 0 || b->getPiece(p).second != b->getPiece(potentialPos).second){
             locations.push_back(potentialPos); 
         }
     }
@@ -65,7 +65,7 @@ vector<Position> Knight::validMoves(Position p, Board* b){
     if(xplus1 && yplus2){
         potentialPos.first = static_cast<xlocation>(x+1);
         potentialPos.second = y+2;
-        if(static_cast<int>(b->getType(potentialPos).first) == 0 || b->getType(p).second != b->getType(potentialPos).second){
+        if(static_cast<int>(b->getPiece(potentialPos).first) == 0 || b->getPiece(p).second != b->getPiece(potentialPos).second){
             locations.push_back(potentialPos); 
         }
     }   
@@ -73,7 +73,7 @@ vector<Position> Knight::validMoves(Position p, Board* b){
     if(xplus1 && yminus2){
         potentialPos.first = static_cast<xlocation>(x+1);
         potentialPos.second = y-2;
-        if(static_cast<int>(b->getType(potentialPos).first) == 0 || b->getType(p).second != b->getType(potentialPos).second){
+        if(static_cast<int>(b->getPiece(potentialPos).first) == 0 || b->getPiece(p).second != b->getPiece(potentialPos).second){
             locations.push_back(potentialPos); 
         }
     }
@@ -81,7 +81,7 @@ vector<Position> Knight::validMoves(Position p, Board* b){
     if(xminus1 && yplus2){
         potentialPos.first = static_cast<xlocation>(x-1);
         potentialPos.second = y+2;
-        if(static_cast<int>(b->getType(potentialPos).first) == 0 || b->getType(p).second != b->getType(potentialPos).second){
+        if(static_cast<int>(b->getPiece(potentialPos).first) == 0 || b->getPiece(p).second != b->getPiece(potentialPos).second){
             locations.push_back(potentialPos); 
         }
     }
@@ -89,7 +89,7 @@ vector<Position> Knight::validMoves(Position p, Board* b){
     if(xminus1 && yminus2){
         potentialPos.first = static_cast<xlocation>(x-1);
         potentialPos.second = y-2;
-        if(static_cast<int>(b->getType(potentialPos).first) == 0 || b->getType(p).second != b->getType(potentialPos).second){
+        if(static_cast<int>(b->getPiece(potentialPos).first) == 0 || b->getPiece(p).second != b->getPiece(potentialPos).second){
             locations.push_back(potentialPos); 
         }
     }

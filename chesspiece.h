@@ -14,7 +14,7 @@ class ChessPiece{
     ChessPiece(bool colour);
     
     virtual vector<Position> validMoves(Position, Board*) = 0;
-    virtual Piece getType() = 0;
+    virtual Piece getPiece() = 0;
 
     void diagonal(Position, Board*, vector<Position>&);
     void rowCol(Position, Board*, vector<Position>&);
