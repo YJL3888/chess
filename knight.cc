@@ -12,7 +12,7 @@ Piece Knight::getType(){
     return piece;
 }
 
-vector<Position> validMoves(Position p, Board* b){
+vector<Position> Knight::validMoves(Position p, Board* b){
     // If it sits on square (x, y), it can move to square (x±2, y±1) or (x±1, y±2). Can “jump over” any piece that blocks its path.
     vector<Position> locations;
     int x = static_cast<int>(p.first);
