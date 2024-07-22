@@ -7,7 +7,7 @@
 #include "Player.h"
 class Game {
  private:
-  Board board;
+  board* b;
   Player* p1;
   Player* p2;
   std::vector<Board*> moveHistory;
