@@ -26,5 +26,6 @@ enum xlocation{
 
 typedef pair<PieceType, bool> Piece; // the type of the piece + the colour of the piece (0 black, 1 white)
 typedef pair<xlocation, int> Position; // the 2D location to represent a position
+typedef pair<Position, Position> Move; // Move from the first position to the second position
 
 #endif
