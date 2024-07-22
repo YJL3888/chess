@@ -2,9 +2,9 @@
 #define GAME_H
 
 #include <vector>
-
 #include "board.h"
 #include "player.h"
+
 class Game {
  private:
   Board* b;
@@ -18,6 +18,6 @@ class Game {
   void play();
   void undo();
   void redo();
-}
+};
 
 #endif
