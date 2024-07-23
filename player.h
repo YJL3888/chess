@@ -15,7 +15,7 @@ class Player {
   virtual ~Player() {};
   bool isCheckMate(Board* b, bool side);
   bool isStaleMate(Board* b, bool side);
-  virtual std::pair<Position, Position> getMove(Board* b) = 0;
+  virtual Move getMove(Board* b) = 0;  // move is a pair of positions
 };
 
 #endif
