@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Knight::Knight(bool colour): ChessPiece{colour} {
+Knight::Knight(bool colour): ChessPiece{colour}{
     piece.first = PieceType::Knight;
 }
 
