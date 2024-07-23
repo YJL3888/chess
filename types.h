@@ -28,4 +28,9 @@ typedef pair<PieceType, bool> Piece; // the type of the piece + the colour of th
 typedef pair<xlocation, int> Position; // the 2D location to represent a position
 typedef pair<Position, Position> Move; // Move from the first position to the second position
 
+struct PotentialMoves{ // all the potential moves of a player
+    Position first;
+    vector<Position> second;
+};
+
 #endif
