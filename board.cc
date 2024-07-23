@@ -1,0 +1,157 @@
+#include "board.h"
+#include "chesspiece.h"
+#include "pawn.h"
+#include "bishop.h"
+#include "rook.h"
+#include "knight.h"
+#include "queen.h"
+#include "king.h"
+#include "square.h"
+#include "textdisplay.h"
+#include "gui.h"
+#include <string>
+#include <memory>
+#include "iostream"
+using namespace std;
+
+/*
+Board constructor - sets up the board with squares and textdisplay.
+TODO - Not tested yet.
+*/
+Board::Board(): squares{}, textDisplay {new TextDisplay} { // later add: gui{new GUI()}
+    for (int i = 1; i <= 8; ++i) {
+        squares.push_back({
+            // need to write the Square overloading ctor to support these push backs
+            // Square({'A',i}, nullptr, textDisplay),
+            // Square({'B',i}, nullptr, textDisplay),
+            // Square({'C',i}, nullptr, textDisplay),
+            // Square({'D',i}, nullptr, textDisplay),
+            // Square({'E',i}, nullptr, textDisplay),
+            // Square({'F',i}, nullptr, textDisplay),
+            // Square({'G',i}, nullptr, textDisplay),
+            // Square({'H',i}, nullptr, textDisplay)
+        });
+    }
+    // add this for GUI: gui->update(textDisplay);
+}
+
+/*
+operator<< overload, friend in Board Class.
+Outputs the board. 
+TODO - will need the textDisplay set up.
+TODO - Not tested yet.
+*/
+ostream& operator<<(std::ostream& out, const Board& b){
+    // b.gui->update(b.textDisplay);
+    // return out << *b.textDisplay;
+}
+
+/*
+TODO - not tested yet
+Return type: bool = true if white goes first, otherwise black goes first.
+Parameters: istream& in, bool printBoard (determines whether or not to print after modification)
+--------------------------------------------------------------------------------------------------
+This method read input from istream, process them to set up board, 
+including adding piece ("+ K e1"), removing piece ("- e1"), and setup done ("done") 
+to check validity.
+*/
+bool Board::commandIntepreter(istream& in, bool printBoard) {
+    std::string arg1, arg2, arg3;
+    bool white = true;
+    bool valid = false;
+    do {
+        in >> arg1;
+        if (in.eof()) break;
+
+        if (arg1 == "+") { // adding a piece: + K e1
+            in >> arg2 >> arg3;
+            if (arg2.size() == 1 && 
+                (toupper(arg2[0]) == 'P' || toupper(arg2[0]) == 'B' || 
+                 toupper(arg2[0]) == 'N' || toupper(arg2[0]) == 'R' || 
+                 toupper(arg2[0]) == 'Q' || toupper(arg2[0]) == 'K') && 
+                 arg3.size() == 2 && 
+                 'A' <= toupper(arg3[0]) && toupper(arg3[0]) <= 'H' && 
+                 '1' <= arg3[1] && arg3[1] <= '8') { // if condition checking for valid adding piece command
+                
+                shared_ptr<ChessPiece> piece;
+                switch (toupper(arg2[0])) {
+                    case 'P': piece = std::make_shared<Pawn>(); break;
+                    case 'R': piece = std::make_shared<Bishop>(); break;
+                    case 'N': piece = std::make_shared<Knight>(); break;
+                    case 'B': piece = std::make_shared<Rook>(); break;
+                    case 'Q': piece = std::make_shared<Queen>(); break;
+                    case 'K': piece = std::make_shared<King>(); break;
+                }
+                squares[arg3[1] - '1'][toupper(arg3[0]) - 'A'].setState(piece);
+                if (printBoard) {
+                    cout << *this;
+                }
+            } else {
+                cout << "Invalid input, should follow format + K e1." << endl;
+            }
+        } 
+
+        else if (arg1 == "-") { // removing a piece: - e1
+            in >> arg2;
+            if (arg2.size() == 2 && 
+                'A' <= toupper(arg2[0]) && toupper(arg2[0]) < 'H' && 
+                '1' <= arg2[1] && arg2[1] <= '8') {
+
+                if (squares[arg2[1] - '1'][toupper(arg2[0]) - 'A'].getState() != nullptr) {
+                    std::shared_ptr<ChessPiece> nullchess(nullptr);
+                    squares[arg2[1] - '1'][toupper(arg2[0]) - 'A'].setState(nullchess);
+                    if(printBoard){
+                        std::cout << *this;
+                    }
+                }
+            } else {
+                cout << "Invalid input, should follow format - e1." << endl;
+            }
+        }
+
+        else if (arg1 == "p") { // set starting player
+            in >> arg2;
+            if (arg2 == "white") { white = true; } 
+            else if (arg2 == "black") { white = false; }
+            else { cout << "Invalid input, only accept either \"= white\" or \"= black\"." <<endl; }
+        }
+
+        else if(arg1 == "done") { // end setup phase - check if setup is valid
+            valid = true;
+            
+            // rule NO.1: all pawns cannot be in first and last rows.
+            for (int i = 0; i < 8; i++) {
+                if (squares[0][i].getPiece().first == PieceType::Pawn || 
+                    squares[7][i].getPiece().first == PieceType::Pawn) {
+                    std::cout << "Invalid setup, pawns cannot be in the first and last rows" << endl;
+                    valid = false;
+                }
+            }
+
+            // rule NO.2: there can only be 1 king for each player. 
+            int numWKing = 0;
+            int numBKing = 0;
+            for (const auto& row : squares) {
+                for (const auto& square : row) {
+                    auto pieceType = square.getPiece();
+                    if (pieceType.first == PieceType::King) {
+                        if (pieceType.second == 1) numWKing++;
+                        else if (pieceType.second == 0) numBKing++;
+                    }
+                }
+            }
+            if (numWKing != 1 || numBKing != 1) {
+                cout << "Invalid setup, there must be 1 king for each side" << endl;
+                valid = false;
+            }
+
+            // rule NO.3: either king cannot be in check.
+            if (inCheck(0) || inCheck(1)) {
+                cout << "Invalid setup, a king is in check" << endl;
+                valid = false;
+            }
+        } else { cout << "Invalid command" << endl; }
+    } while (arg1 != "done" || !valid);
+
+    return white;
+}
