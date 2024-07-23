@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Bishop::Bishop(bool colour): ChessPiece{colour} {
+Bishop::Bishop(bool colour): ChessPiece{colour}{
     piece.first = PieceType::Bishop;
 }
 
