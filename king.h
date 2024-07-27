@@ -8,7 +8,7 @@ using namespace std;
 class King: public ChessPiece {
     private:
         bool isFirstMove = numMoves == 0;
-        bool checkCastling(Board*, Position, Position, Position);
+        bool checkCastling(Board*, Position&, Position&, Position&);
     public:
         King(bool);
 
