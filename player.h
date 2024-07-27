@@ -13,9 +13,9 @@ class Player {
  public:
   Player(bool isWhite);
   virtual ~Player() {};
-  bool isCheckMate(Board* b, bool side);
-  bool isStaleMate(Board* b, bool side);
-  virtual Move getMove(Board* b) = 0;  // move is a pair of positions
+  bool isCheckMate(Board*, bool);
+  bool isStaleMate(Board*, bool);
+  virtual Move getMove(Board*) = 0;  // move is a pair of positions
 };
 
 #endif

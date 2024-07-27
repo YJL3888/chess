@@ -1,8 +1,11 @@
 #include "humanplayer.h"
 
+
 #include <iostream>
 
 #include "types.h"
+
+class Board;
 
 HumanPlayer::HumanPlayer(bool isWhite) : Player(isWhite) {};
 
