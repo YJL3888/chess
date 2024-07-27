@@ -77,7 +77,7 @@ vector<Position> King::validMoves(Position p, Board* b){
 
 }
 
-bool King::checkCastling(Board* b, Position p1, Position potentialPos, Position p){
+bool King::checkCastling(Board* b, Position& p1, Position& potentialPos, Position& p){
     bool check1;
     bool check2;
     bool check3;
