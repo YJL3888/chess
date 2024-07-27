@@ -11,6 +11,8 @@ class ChessPiece{
   protected:
     Piece piece;
     int numMoves = 0; // need this for en Passant and other operations
+    void diagonalHelper(Board*, int, int, Position&, Position&, vector<Position>&, bool, bool);
+    void rowColHelper(Board*, int, bool, int, Position&, Position&, vector<Position>&, bool);
   public:
     ChessPiece(bool colour);
     
@@ -24,6 +26,7 @@ class ChessPiece{
 
     int getNumMoves();
     void incrementMoves();
+    void decrementMoves(); // used for reverse moves
 };
 
 #endif
