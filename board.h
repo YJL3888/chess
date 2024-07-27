@@ -19,6 +19,7 @@ class Board {
 
   bool commandIntepreter(istream&, bool);
   Piece getPiece(Position);
+  bool isFirstMove(Position);
   Move previousMove(); // need this for en passant to verfiy the previous move of the opponent's pawn
   int numMoves(Position);
 
@@ -26,7 +27,7 @@ class Board {
 
   bool inCheck(bool); // check if this colour is in check
   void testMove(Move, bool=false); // bool is whether we perform this move or not, default is false
-  void badMove(Move, bool=false);
+  void reverseMove(Move, bool=false);
 
   friend ostream& operator<<(ostream& out, const Board& b);
 
