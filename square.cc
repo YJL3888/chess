@@ -1,7 +1,16 @@
 #include "square.h"
 using namespace std;
 
-Square::Square() : chessPiece(nullptr) {}
+// private ctor
+Square::Square(Position position, shared_ptr<ChessPiece> chessPiece): 
+    observers{}, chessPiece{chessPiece}, position(position) {}
+
+// overloaded public ctor with observer
+Square::Square(Position position, shared_ptr<ChessPiece> chessPiece, Observer* observer): 
+    observers{}, chessPiece{chessPiece}, position(position) {
+    attach(observer);
+    notifyObservers();
+}
 
 void Square::setState(shared_ptr<ChessPiece> piece) {
     chessPiece = piece;
@@ -22,3 +31,14 @@ Piece Square::getPiece() const {
 Position Square::getPosition() {
     return position;
 }
+
+void Square::notifyObservers() {
+    Square temp{getPosition(), chessPiece};
+    observers[0] -> notify(temp);
+}
+
+void Square::attach(Observer* observer) {
+    observers.push_back(observer);
+}
+
+Square::~Square(){}

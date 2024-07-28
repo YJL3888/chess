@@ -4,18 +4,28 @@
 #include <memory>
 #include "chesspiece.h"
 #include "types.h"
+#include "observer.h"
 using namespace std;
 
-class Square {
-    shared_ptr<ChessPiece> chessPiece;
-    Position position;
+class Observer;
+class ChessPiece;
+class Board;
 
+class Square {
+    shared_ptr<ChessPiece> chessPiece;  // chess piece with Piece and other info
+    Position position;                  // xy coordinate in form: pair<xlocation, int>
+    vector<Observer*> observers;        // list of observers attached
+    Square(Position position, shared_ptr<ChessPiece>);
+    void notifyObservers();
+    void attach(Observer*);
+    
 public:
-    Square();
-    void setState(shared_ptr<ChessPiece> piece);
-    shared_ptr<ChessPiece> getState() const;
-    Piece getPiece() const;
-    Position getPosition();
+    Square(Position position, shared_ptr<ChessPiece>, Observer* observer);
+    void setState(shared_ptr<ChessPiece> piece);    // setting chessPiece to the parameter piece
+    shared_ptr<ChessPiece> getState() const;        // return the private field chessPiece
+    Piece getPiece() const;     // call respective chess piece's getPiece(), return pair<PieceType, bool>
+    Position getPosition();     // get the x and y coordinates in form: pair<xlocation, int>
+    ~Square();
 };
 
 #endif
