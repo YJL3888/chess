@@ -3,11 +3,17 @@
 #include "gui.h"
 using namespace std;
 
-class GUI {
-    void update(shared_ptr<TextDisplay> display) {
-        // Implement GUI update logic
-    }
+class TextDisplay;
 
+class GUI {
+    void drawBoard();
+    int updateCount;
+    
+    public:
+        GUI();
+        void drawPiece(char, int, int);
+        void update(shared_ptr<TextDisplay> display) {}
+        virtual ~GUI();
 };
 
 #endif
