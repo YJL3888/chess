@@ -27,6 +27,11 @@ enum xlocation {
   Z = -2   // Checkmate
 };
 
+enum class PlayerType {
+    human,
+    computer
+};
+
 typedef pair<PieceType, bool> Piece;  // the type of the piece + the colour of
                                       // the piece (0 black, 1 white)
 typedef pair<xlocation, int>
