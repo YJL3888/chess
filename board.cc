@@ -12,24 +12,24 @@
 #include <string>
 #include <memory>
 #include "iostream"
+#include "types.h"
 using namespace std;
 
 /*
 Board constructor - sets up the board with squares and textdisplay.
 TODO - Not tested yet.
 */
-Board::Board(): squares{}, textDisplay {new TextDisplay} { // later add: gui{new GUI()}
+Board::Board(): squares{}, textDisplay {make_shared<TextDisplay>()} { // later add: gui{new GUI()}
     for (int i = 1; i <= 8; ++i) {
         squares.push_back({
-            // need to write the Square overloading ctor to support these push backs
-            // Square({'A',i}, nullptr, textDisplay),
-            // Square({'B',i}, nullptr, textDisplay),
-            // Square({'C',i}, nullptr, textDisplay),
-            // Square({'D',i}, nullptr, textDisplay),
-            // Square({'E',i}, nullptr, textDisplay),
-            // Square({'F',i}, nullptr, textDisplay),
-            // Square({'G',i}, nullptr, textDisplay),
-            // Square({'H',i}, nullptr, textDisplay)
+            Square(Position(A,i), nullptr, textDisplay),
+            Square(Position(B,i), nullptr, textDisplay),
+            Square(Position(C,i), nullptr, textDisplay),
+            Square(Position(D,i), nullptr, textDisplay),
+            Square(Position(E,i), nullptr, textDisplay),
+            Square(Position(F,i), nullptr, textDisplay),
+            Square(Position(G,i), nullptr, textDisplay),
+            Square(Position(H,i), nullptr, textDisplay),
         });
     }
     // add this for GUI: gui->update(textDisplay);
@@ -42,6 +42,8 @@ TODO - will need the textDisplay set up.
 TODO - Not tested yet.
 */
 ostream& operator<<(std::ostream& out, const Board& b){
+    out << *(b.textDisplay);
+    return out;
     // b.gui->update(b.textDisplay);
     // return out << *b.textDisplay;
 }
@@ -75,12 +77,19 @@ bool Board::commandIntepreter(istream& in, bool printBoard) {
                 
                 shared_ptr<ChessPiece> piece;
                 switch (toupper(arg2[0])) {
-                    case 'P': piece = std::make_shared<Pawn>(); break;
-                    case 'R': piece = std::make_shared<Bishop>(); break;
-                    case 'N': piece = std::make_shared<Knight>(); break;
-                    case 'B': piece = std::make_shared<Rook>(); break;
-                    case 'Q': piece = std::make_shared<Queen>(); break;
-                    case 'K': piece = std::make_shared<King>(); break;
+                    case 'P': piece = std::make_shared<Pawn>(false); break;
+                    case 'R': piece = std::make_shared<Bishop>(false); break;
+                    case 'N': piece = std::make_shared<Knight>(false); break;
+                    case 'B': piece = std::make_shared<Rook>(false); break;
+                    case 'Q': piece = std::make_shared<Queen>(false); break;
+                    case 'K': piece = std::make_shared<King>(false); break;
+
+                    case 'p': piece = std::make_shared<Pawn>(true); break;
+                    case 'r': piece = std::make_shared<Bishop>(true); break;
+                    case 'n': piece = std::make_shared<Knight>(true); break;
+                    case 'b': piece = std::make_shared<Rook>(true); break;
+                    case 'q': piece = std::make_shared<Queen>(true); break;
+                    case 'k': piece = std::make_shared<King>(true); break;
                 }
                 squares[arg3[1] - '1'][toupper(arg3[0]) - 'A'].setState(piece);
                 if (printBoard) {
@@ -159,7 +168,7 @@ bool Board::commandIntepreter(istream& in, bool printBoard) {
 void Board::castling(Move move) {
     // Move is of type: pair<pair<xlocation, int>, pair<xlocation, int>>
     // basically (x1, y1), (x2, y2)
-    std::shared_ptr<ChessPiece> emptyState = std::make_shared<ChessPiece>(Piece(PieceType::Empty, false));
+    std::shared_ptr<ChessPiece> emptyState = nullptr;
 
     int kingRow = move.first.second - 1;
     int kingStartCol = static_cast<int>(move.first.first) - 1;
@@ -190,7 +199,7 @@ void Board::castling(Move move) {
 void Board::enPassant(Move move) {
     // Move is of type: pair<pair<xlocation, int>, pair<xlocation, int>>
     // basically (x1, y1), (x2, y2)
-    std::shared_ptr<ChessPiece> emptyState = std::make_shared<ChessPiece>(Piece(PieceType::Empty, false));
+    std::shared_ptr<ChessPiece> emptyState = nullptr;
 
     int startX = static_cast<int>(move.first.first) - 1;
     int startY = move.first.second - 1;
@@ -207,4 +216,20 @@ void Board::enPassant(Move move) {
     } else { // Black pawn capturing
         squares[endY + 1][endX].setState(emptyState);
     }
+}
+
+void Board::promote(Position pos, char c){
+    shared_ptr<ChessPiece> newPiece;
+    switch(c) {
+        case 'Q':
+            newPiece = make_shared<Queen>(Queen(getPiece(pos).second)); break;
+        case 'N':
+            newPiece = make_shared<Knight>(Knight(getPiece(pos).second)); break;
+        case 'R':
+            newPiece = make_shared<Rook>(Rook(getPiece(pos).second)); break;
+        case 'B':
+            newPiece = make_shared<Bishop>(Bishop(getPiece(pos).second)); break;
+        default: break;
+    }
+    squares[pos.second-1][pos.first-1].setState(newPiece);
 }
