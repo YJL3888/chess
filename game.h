@@ -10,8 +10,8 @@ class Game {
   Board* b;
   Player* p1;
   Player* p2;
-  std::vector<Board*> moveHistory;
-  std::vector<Board*> redoHistory;
+  std::vector<Move> moveHistory;
+  std::vector<Move> redoHistory;
 
  public:
   Game();
