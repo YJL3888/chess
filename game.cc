@@ -3,37 +3,45 @@
 #include <iostream>
 #include <sstream>
 #include "types.h"
+#include "level1.h"
+#include "level2.h"
+#include "level3.h"
+#include "level4.h"
 using namespace std;
 
-Game::Game(): b{new Board()}, isWhite{1}, checkmate{false}, startGame{false}, p1{nullptr}, p2{nullptr}, p1Score{0}, p2Score{0}{}
+Game::Game(): 
+    b{new Board()}, 
+    isWhite{1}, 
+    checkmate{false}, 
+    startGame{false}, 
+    p1{nullptr}, p2{nullptr}, 
+    p1Score{0}, p2Score{0}{}
 
 
 void Game::endGame(char status){
     cout << *b << endl; // print the board
 
-    if(status == 's'){
+    if (status == 'd') {
         cout << "The game is a draw!" << endl;
         p1Score += 0.5;
         p2Score += 0.5;
     }
     
-    if(status == 'g'){
-        if(isWhite){
+    if (status == 'w') {
+        if (isWhite) {
             ++p1Score;
             cout << "Checkmate! White player won!" << endl;
-        }
-        else{
+        } else {
             ++p2Score;
             cout << "Checkmate! Black player won!" << endl;
         }
     }
 
-    if(status == 'r'){
-        if(isWhite){
+    if (status == 'r') {
+        if (isWhite) {
             ++p1Score;
             cout << "Black Resigned! White player won!" << endl;
-        }
-        else{
+        } else {
             ++p2Score;
             cout << "White Resigned! Black player won!" << endl;
         }
@@ -49,22 +57,27 @@ void Game::endGame(char status){
 // NEED TO IMPLEMENT THIS
 // We need this because we put the different levels as inheritance instead in one class
 // We can change this if we want
-void ComputerDifficulty(int difficulty, Player* cp){
-    if(difficulty == 1){
-        cp = new Level1()
+void ComputerDifficulty(int difficulty, Player* computerPlayer, bool isWhite){
+    switch (difficulty) {
+        case 1: computerPlayer = new Level1(isWhite);
+        case 2: computerPlayer = new Level2(isWhite);
+        case 3: computerPlayer = new Level3(isWhite);
+        case 4: computerPlayer = new Level4(isWhite);
+        default: computerPlayer = new Level1(isWhite);
     }
     // unfinished
 }
 
 
-void Game::play(){
+void Game::play() {
     string command, p1Type, p2Type;
     int difficulty;
-    int needSetUp = 0;
-    while(cin >> command){
-        if(startGame == false && command == "game"){ // game white-player black-player
-            if(needSetUp == 0){
-                std::stringstream defaultSetUp;
+    int setUpMode = 0;
+    while(cin >> command) {
+        // CASE WHEN NO ACTIVE GAME
+        if (startGame == false && command == "game") { // game white-player black-player
+            if (setUpMode == 0) {
+                stringstream defaultSetUp;
                 defaultSetUp << "+ r a8 + n b8 + b c8 + q d8 + k e8 + b f8 + n g8 + r h8 ";
                 defaultSetUp << "+ p a7 + p b7 + p c7 + p d7 + p e7 + p f7 + p g7 + p h7 ";
                 defaultSetUp << "+ P a2 + P b2 + P c2 + P d2 + P e2 + P f2 + P g2 + P h2 ";
@@ -73,26 +86,116 @@ void Game::play(){
                 b->commandIntepreter(defaultSetUp, 1);
             }
             cin >> p1Type >> p2Type;
-            if(p1){ delete p1; }
-            if(p2){ delete p2; }
-            if(p1Type == "human"){
-                p1 = new HumanPlayer{1}; // white
-            }
-            else{
-                if(p1Type.back()-'0' < 1 || p1Type.back()-'0' > 4){
-                    std::cout << "The computer difficulty needs to be in between 1-4 inclusive, difficulty default set to 1" << std::endl;
+            // check if p1 and p2 contain existing players, delete if not null => give space to create new players.
+            if (p1) { delete p1; }
+            if (p2) { delete p2; }
+
+            if (p1Type == "human") { p1 = new HumanPlayer{1}; } // 1 means white  
+            else {
+                if (p1Type.back()-'0' < 1 || p1Type.back()-'0' > 4) { // invalid computer level.
+                    cout << "Invalid level for player 1. The computer difficulty needs to be in between 1-4 inclusive, difficulty default set to 1" << endl;
                     difficulty = 1;
-                }else{
+                } else { // valid computer level.
                     difficulty = p1Type.back() - '0';
                 }
-                ComputerDifficulty(difficulty, p1);
+                ComputerDifficulty(difficulty, p1, true); //true means white
             }
 
-            if(p2Type == "human"){
-                p2 = new HumanPlayer{0}; // black
+            if (p2Type == "human") { p2 = new HumanPlayer{0}; } // 0 means black
+            else {
+                if (p2Type.back()-'0' < 1 || p2Type.back()-'0' > 4) { // invalid computer level.
+                    cout << "Invalid level for player 2. The computer difficulty needs to be in between 1-4 inclusive, difficulty default set to 1" << endl;
+                    difficulty = 1;
+                } else { // valid computer level.
+                    difficulty = p2Type.back() - '0';
+                }
+                ComputerDifficulty(difficulty, p2, false); //false means black
             }
-            
-            // CONTINUE HERE
+
+            //STARTING GAME!
+            startGame = true;
+            cout<< *b <<endl;
+        }
+
+        // CASE WHEN THERE IS ACTIVE GAME
+        else if (startGame) {
+            if (command == "move") {
+                if (isWhite && p1->getPlayerType() == PlayerType::computer) {
+                    cout << "White computer is making a move" << endl;
+                    Move move = p1->getMove(b);
+                    if (move.second.second == -1) { //checkmate?
+                        endGame('w');
+                        continue;
+                    }
+                    if (move.second.second == -2) {
+                        endGame('d');
+                        continue;
+                    }
+                }
+
+                if (!isWhite && p2->getPlayerType() == PlayerType::computer) {
+                    cout << "Black computer is making a move" << endl;
+                    Move move = p2->getMove(b);
+                    if (move.second.second == -1) { //checkmate?
+                        endGame('w');
+                        continue;
+                    }
+                    if (move.second.second == -2) {
+                        endGame('d');
+                        continue;
+                    }
+                }
+
+                if (!isWhite && p2->getPlayerType() == PlayerType::human) {
+                    cout << "Human (black side) is making a move" << endl;
+                    Move move = p2->getMove(b);
+                    if (move.second.second == -1) { //checkmate?
+                        endGame('w');
+                        continue;
+                    }
+                    if (move.second.second == -2) {
+                        endGame('d');
+                        continue;
+                    }
+                }
+                
+                if (isWhite && p1->getPlayerType() == PlayerType::human) {
+                    cout << "Human (white side)  is making a move" << endl;
+                    Move move = p1->getMove(b);
+                    if (move.second.second == -1) { //checkmate?
+                        endGame('w');
+                        continue;
+                    }
+                    if (move.second.second == -2) {
+                        endGame('d');
+                        continue;
+                    }
+                }
+
+                if (cin.eof()) { break; }
+                cout << *b << endl;
+                isWhite = !isWhite;
+                isWhite ? cout << "White's turn" << endl : cout << "Black's turn" <<endl;
+            }
+
+            if (command == "resign") {
+                isWhite = !isWhite;
+                endGame('r');
+            } if (command == "setup") {
+                cout << "No setting up allowed during a game!" << endl;
+            } if (command == "game") {
+                cout << "There is an active game in progress!" << endl;
+            }
+        }
+
+        // moving
+        else if (command == "move") {
+            cout << "Invalid command. Game is not initalized yet!" << endl;
+        } else if (command == "setup") {
+            isWhite = b->commandIntepreter(cin, 0);
+            setUpMode = 1;
+        }
+    }
 
     cout << "Final Score" << endl;
     cout << "White: " << p1Score << endl;
