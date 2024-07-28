@@ -18,3 +18,7 @@ Piece Square::getPiece() const {
         return {PieceType::Empty, false}; // false for color if the square is empty
     }
 }
+
+Position Square::getPosition() {
+    return position;
+}
