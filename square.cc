@@ -6,7 +6,7 @@ Square::Square(Position position, shared_ptr<ChessPiece> chessPiece):
     observers{}, chessPiece{chessPiece}, position(position) {}
 
 // overloaded public ctor with observer
-Square::Square(Position position, shared_ptr<ChessPiece> chessPiece, Observer* observer): 
+Square::Square(Position position, shared_ptr<ChessPiece> chessPiece, shared_ptr<Observer> observer): 
     observers{}, chessPiece{chessPiece}, position(position) {
     attach(observer);
     notifyObservers();
@@ -37,7 +37,7 @@ void Square::notifyObservers() {
     observers[0] -> notify(temp);
 }
 
-void Square::attach(Observer* observer) {
+void Square::attach(shared_ptr<Observer> observer) {
     observers.push_back(observer);
 }
 

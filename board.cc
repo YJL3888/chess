@@ -12,24 +12,24 @@
 #include <string>
 #include <memory>
 #include "iostream"
+#include "types.h"
 using namespace std;
 
 /*
 Board constructor - sets up the board with squares and textdisplay.
 TODO - Not tested yet.
 */
-Board::Board(): squares{}, textDisplay {new TextDisplay} { // later add: gui{new GUI()}
+Board::Board(): squares{}, textDisplay {make_shared<TextDisplay>()} { // later add: gui{new GUI()}
     for (int i = 1; i <= 8; ++i) {
         squares.push_back({
-            // need to write the Square overloading ctor to support these push backs
-            // Square({'A',i}, nullptr, textDisplay),
-            // Square({'B',i}, nullptr, textDisplay),
-            // Square({'C',i}, nullptr, textDisplay),
-            // Square({'D',i}, nullptr, textDisplay),
-            // Square({'E',i}, nullptr, textDisplay),
-            // Square({'F',i}, nullptr, textDisplay),
-            // Square({'G',i}, nullptr, textDisplay),
-            // Square({'H',i}, nullptr, textDisplay)
+            Square(Position(A,i), make_shared<ChessPiece>(), textDisplay),
+            Square(Position(B,i), make_shared<ChessPiece>(), textDisplay),
+            Square(Position(C,i), make_shared<ChessPiece>(), textDisplay),
+            Square(Position(D,i), make_shared<ChessPiece>(), textDisplay),
+            Square(Position(E,i), make_shared<ChessPiece>(), textDisplay),
+            Square(Position(F,i), make_shared<ChessPiece>(), textDisplay),
+            Square(Position(G,i), make_shared<ChessPiece>(), textDisplay),
+            Square(Position(H,i), make_shared<ChessPiece>(), textDisplay),
         });
     }
     // add this for GUI: gui->update(textDisplay);
@@ -42,7 +42,8 @@ TODO - will need the textDisplay set up.
 TODO - Not tested yet.
 */
 ostream& operator<<(std::ostream& out, const Board& b){
-    b.textDisplay.no;
+    out << *(b.textDisplay);
+    return out;
     // b.gui->update(b.textDisplay);
     // return out << *b.textDisplay;
 }
