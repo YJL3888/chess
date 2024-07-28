@@ -1,6 +1,7 @@
 #ifndef TYPE_H_
 #define TYPE_H_
 #include <utility>
+#include <vector>
 using namespace std;
 
 enum class PieceType {
