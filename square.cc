@@ -32,6 +32,13 @@ Position Square::getPosition() {
     return position;
 }
 
+int Square::getNumMoves(){
+    if(chessPiece){
+        return chessPiece->getNumMoves();
+    }
+    return 0;
+}
+
 void Square::notifyObservers() {
     Square temp{getPosition(), chessPiece};
     observers[0] -> notify(temp);

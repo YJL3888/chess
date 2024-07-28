@@ -25,6 +25,7 @@ public:
     shared_ptr<ChessPiece> getState() const;        // return the private field chessPiece
     Piece getPiece() const;     // call respective chess piece's getPiece(), return pair<PieceType, bool>
     Position getPosition();     // get the x and y coordinates in form: pair<xlocation, int>
+    int getNumMoves(); // return the number of moves made
     ~Square();
 };
 
