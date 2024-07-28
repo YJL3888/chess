@@ -22,7 +22,7 @@ class ChessPiece{
     void diagonal(Position, Board*, vector<Position>&);
     void rowCol(Position, Board*, vector<Position>&);
 
-    virtual ~ChessPiece(){};
+    virtual ~ChessPiece() = default;
 
     int getNumMoves();
     void incrementMoves();
