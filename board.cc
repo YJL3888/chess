@@ -155,3 +155,56 @@ bool Board::commandIntepreter(istream& in, bool printBoard) {
 
     return white;
 }
+
+void Board::castling(Move move) {
+    // Move is of type: pair<pair<xlocation, int>, pair<xlocation, int>>
+    // basically (x1, y1), (x2, y2)
+    std::shared_ptr<ChessPiece> emptyState = std::make_shared<ChessPiece>(Piece(PieceType::Empty, false));
+
+    int kingRow = move.first.second - 1;
+    int kingStartCol = static_cast<int>(move.first.first) - 1;
+    int kingEndCol = static_cast<int>(move.second.first) - 1;
+
+    // Perform king-side castling
+    if (kingEndCol == kingStartCol + 2) {
+        // Move the king
+        squares[kingRow][kingEndCol].setState(squares[kingRow][kingStartCol].getState());
+        squares[kingRow][kingStartCol].setState(emptyState);
+
+        // Move the rook
+        squares[kingRow][kingEndCol - 1].setState(squares[kingRow][7].getState());
+        squares[kingRow][7].setState(emptyState);
+    } 
+    // Perform queen-side castling
+    else if (kingEndCol == kingStartCol - 2) {
+        // Move the king
+        squares[kingRow][kingEndCol].setState(squares[kingRow][kingStartCol].getState());
+        squares[kingRow][kingStartCol].setState(emptyState);
+
+        // Move the rook
+        squares[kingRow][kingEndCol + 1].setState(squares[kingRow][0].getState());
+        squares[kingRow][0].setState(emptyState);
+    }
+}
+
+void Board::enPassant(Move move) {
+    // Move is of type: pair<pair<xlocation, int>, pair<xlocation, int>>
+    // basically (x1, y1), (x2, y2)
+    std::shared_ptr<ChessPiece> emptyState = std::make_shared<ChessPiece>(Piece(PieceType::Empty, false));
+
+    int startX = static_cast<int>(move.first.first) - 1;
+    int startY = move.first.second - 1;
+    int endX = static_cast<int>(move.second.first) - 1;
+    int endY = move.second.second - 1;
+
+    // Move the capturing pawn to the destination square
+    squares[endY][endX].setState(squares[startY][startX].getState());
+    squares[startY][startX].setState(emptyState);
+
+    // Remove the captured pawn
+    if (squares[endY][endX].getState()->getPiece().second) { // White pawn capturing
+        squares[endY - 1][endX].setState(emptyState);
+    } else { // Black pawn capturing
+        squares[endY + 1][endX].setState(emptyState);
+    }
+}

@@ -13,6 +13,9 @@ class Board {
   vector<vector<Square>> squares;
   shared_ptr<TextDisplay> textDisplay;
   unique_ptr<GUI> gui;
+  Move moveList;
+  void enPassant(Move);
+  void castling(Move);
 
  public:
   Board();
@@ -25,8 +28,7 @@ class Board {
                         // of the opponent's pawn
   int numMoves(Position);
 
-  vector<PotentialMoves> allPotentialMoves(
-      bool);  // returns all the potential moves of a player
+  vector<PotentialMoves> allPotentialMoves(bool);  // returns all the potential moves of a player
 
   bool inCheck(bool);                 // check if this colour is in check
   void testMove(Move, bool = false);  // bool is whether we perform this move or
