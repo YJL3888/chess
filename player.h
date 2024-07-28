@@ -6,6 +6,8 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
+#include "types.h"
+
 class Player {
  private:
   bool isWhite;
