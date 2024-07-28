@@ -5,6 +5,7 @@
 
 class Level1 : public ComputerPlayer {
 public:
+    Level1(bool isWhite);
     std::pair<Position, Position> getMove(Board* board) override;
 };
 
