@@ -8,4 +8,4 @@ public:
     std::pair<Position, Position> getMove(Board* board) override;
 };
 
-#endif // LEVEL3_H
+#endif

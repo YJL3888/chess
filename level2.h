@@ -1,11 +1,11 @@
-#ifndef LEVEL1_H
-#define LEVEL1_H
+#ifndef LEVEL2_H
+#define LEVEL2_H
 
 #include "computerplayer.h"
 
-class Level1 : public ComputerPlayer {
+class Level2 : public ComputerPlayer {
 public:
     std::pair<Position, Position> getMove(Board* board) override;
 };
 
-#endif // LEVEL1_H
+#endif
