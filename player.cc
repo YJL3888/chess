@@ -12,12 +12,26 @@ bool Player::isCheckMate(Board* b, bool isWhite) {
       Move makeMove = std::make_pair(first, end);
       Move undoMove = std::make_pair(end, first);
       b->testMove(makeMove, false);
-      if (!b->inCheck(opponent)) {
-        b->reverseMove(undoMove, false);
+      bool stillInCheck = b->inCheck(opponent);
+      b->reverseMove(undoMove, false);
+      if (!stillInCheck) {
         return false;  // not in checkmate
       }
-      b->reverseMove(undoMove, false);
     }
   }
-  return true;
+  return true;  // if all moves leads to check, checkmate!
+}
+
+bool Player::isStaleMate(Board* b, bool isWhite) {
+  vector<PotentialMoves> Moves = b->allPotentialMoves(isWhite);
+  for (auto move : Moves) {
+    for (auto second : move.second) {
+      if (!b->inCheck(isWhite) &&
+          b->getPiece(second).first == PieceType::King) {
+        // king should not be in check
+        return false;
+      }
+    }
+  }
+  return true;  // king not in check & no legal move
 }
