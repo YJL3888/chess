@@ -81,20 +81,20 @@ bool Board::commandIntepreter(istream& in, bool printBoard) {
                  '1' <= arg3[1] && arg3[1] <= '8') { // if condition checking for valid adding piece command
                 
                 shared_ptr<ChessPiece> piece;
-                switch (toupper(arg2[0])) {
-                    case 'P': piece = std::make_shared<Pawn>(false); break;
-                    case 'R': piece = std::make_shared<Rook>(false); break;
-                    case 'N': piece = std::make_shared<Knight>(false); break;
-                    case 'B': piece = std::make_shared<Bishop>(false); break;
-                    case 'Q': piece = std::make_shared<Queen>(false); break;
-                    case 'K': piece = std::make_shared<King>(false); break;
+                switch (arg2[0]) {
+                    case 'P': piece = std::make_shared<Pawn>(true); break;
+                    case 'R': piece = std::make_shared<Rook>(true); break;
+                    case 'N': piece = std::make_shared<Knight>(true); break;
+                    case 'B': piece = std::make_shared<Bishop>(true); break;
+                    case 'Q': piece = std::make_shared<Queen>(true); break;
+                    case 'K': piece = std::make_shared<King>(true); break;
 
-                    case 'p': piece = std::make_shared<Pawn>(true); break;
-                    case 'r': piece = std::make_shared<Rook>(true); break;
-                    case 'n': piece = std::make_shared<Knight>(true); break;
-                    case 'b': piece = std::make_shared<Bishop>(true); break;
-                    case 'q': piece = std::make_shared<Queen>(true); break;
-                    case 'k': piece = std::make_shared<King>(true); break;
+                    case 'p': piece = std::make_shared<Pawn>(false); break;
+                    case 'r': piece = std::make_shared<Rook>(false); break;
+                    case 'n': piece = std::make_shared<Knight>(false); break;
+                    case 'b': piece = std::make_shared<Bishop>(false); break;
+                    case 'q': piece = std::make_shared<Queen>(false); break;
+                    case 'k': piece = std::make_shared<King>(false); break;
                 }
                 squares[arg3[1] - '1'][toupper(arg3[0]) - 'A'].setState(piece);
                 if (printBoard) {
