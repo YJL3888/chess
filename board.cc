@@ -173,7 +173,7 @@ bool Board::commandIntepreter(istream& in, bool printBoard) {
 void Board::castling(Move move) {
     // Move is of type: pair<pair<xlocation, int>, pair<xlocation, int>>
     // basically (x1, y1), (x2, y2)
-    shared_ptr<ChessPiece> emptyState = nullptr;
+    shared_ptr<ChessPiece> nextPiece = nullptr;
 
     int kingRow = move.first.second - 1;
     int kingStartCol = static_cast<int>(move.first.first) - 1;
@@ -181,45 +181,71 @@ void Board::castling(Move move) {
 
     // Perform king-side castling
     if (kingEndCol == kingStartCol + 2) {
-        // Move the king
-        squares[kingRow][kingEndCol].setState(squares[kingRow][kingStartCol].getState());
-        squares[kingRow][kingStartCol].setState(emptyState);
+        // // Move the king
+        // squares[kingRow][kingEndCol].setState(squares[kingRow][kingStartCol].getState());
+        // squares[kingRow][kingStartCol].setState(emptyState);
 
-        // Move the rook
-        squares[kingRow][kingEndCol - 1].setState(squares[kingRow][7].getState());
-        squares[kingRow][7].setState(emptyState);
+        // // Move the rook
+        // squares[kingRow][kingEndCol - 1].setState(squares[kingRow][7].getState());
+        // squares[kingRow][7].setState(emptyState);
+        
+        squares[kingRow][7].setState(nextPiece); // we used the swap instead of simply assigning in setState
+        squares[kingRow][5].setState(nextPiece);
     } 
     // Perform queen-side castling
     else if (kingEndCol == kingStartCol - 2) {
-        // Move the king
-        squares[kingRow][kingEndCol].setState(squares[kingRow][kingStartCol].getState());
-        squares[kingRow][kingStartCol].setState(emptyState);
+        // // Move the king
+        // squares[kingRow][kingEndCol].setState(squares[kingRow][kingStartCol].getState());
+        // squares[kingRow][kingStartCol].setState(emptyState);
 
-        // Move the rook
-        squares[kingRow][kingEndCol + 1].setState(squares[kingRow][0].getState());
-        squares[kingRow][0].setState(emptyState);
+        // // Move the rook
+        // squares[kingRow][kingEndCol + 1].setState(squares[kingRow][0].getState());
+        // squares[kingRow][0].setState(emptyState);
+        
+        squares[kingRow][0].setState(nextPiece);
+        squares[kingRow][3].setState(nextPiece);
     }
 }
 
 void Board::enPassant(Move move) {
     // Move is of type: pair<pair<xlocation, int>, pair<xlocation, int>>
     // basically (x1, y1), (x2, y2)
+    // shared_ptr<ChessPiece> nextState = nullptr;
     shared_ptr<ChessPiece> emptyState = nullptr;
 
-    int startX = static_cast<int>(move.first.first) - 1;
-    int startY = move.first.second - 1;
-    int endX = static_cast<int>(move.second.first) - 1;
-    int endY = move.second.second - 1;
+    int startX = static_cast<int>(move.first.first);
+    int startY = move.first.second;
+    int endX = static_cast<int>(move.second.first);
+    int endY = move.second.second;
+
+    Piece beginPeice = squares[startY-1][startX-1].getPiece();
+    Piece endPiece = squares[endY-1][endX-1].getPiece();
+    Piece temp;
 
     // Move the capturing pawn to the destination square
-    squares[endY][endX].setState(squares[startY][startX].getState());
-    squares[startY][startX].setState(emptyState);
+    // squares[startY][startX].setState(nextState);
+    // squares[endY][endX].setState(nextState);
 
     // Remove the captured pawn
-    if (squares[endY][endX].getState()->getPiece().second) { // White pawn capturing
-        squares[endY - 1][endX].setState(emptyState);
-    } else { // Black pawn capturing
-        squares[endY + 1][endX].setState(emptyState);
+    // if (squares[endY][endX].getState()->getPiece().second) { // White pawn capturing
+    //     squares[endY - 1][endX].setState(emptyState);
+    // } else { // Black pawn capturing
+    //     squares[endY + 1][endX].setState(emptyState);
+    // }
+
+    if(beginPeice.first == PieceType::Pawn && endPiece.first == PieceType::Empty && (startX+1 == endX || startX-1 == endX) && (startY+1 == endY || startY-1 == endY)){
+        if(beginPeice.second == 0){
+            temp = squares[endY][endX-1].getPiece();
+            if(temp.first == PieceType::Pawn){
+                squares[endY][endX-1].setState(emptyState);
+            }
+        }
+        else{
+            temp = squares[endY-2][endX-1].getPiece();
+            if(temp.first == PieceType::Pawn){
+                squares[endY-2][endX-1].setState(emptyState);
+            }
+        }
     }
 }
 
@@ -318,15 +344,15 @@ void Board::reverseMove(Move move, bool update){ // reverse the move and switch 
 
 void Board::nextMove(Move move, bool update){ // this is a helper function
     shared_ptr<ChessPiece> nextPiece = nullptr;
-    int row = move.first.second-1;
-    int col = (static_cast<int>(move.first.first))-1;
+    int y = move.first.second-1;
+    int x = (static_cast<int>(move.first.first))-1;
     if(update){
         moveHistory.push_back(move);
         enPassant(move);
-        if(squares[row][col].getPiece().first == PieceType::King){
+        if(squares[y][x].getPiece().first == PieceType::King){
             castling(move);
         }
     }
-    squares[move.second.second-1][(static_cast<int>(move.second.first))-1].setState(squares[row][col].getState());
-    squares[row][col].setState(nextPiece);
+    squares[y][x].setState(nextPiece);
+    squares[move.second.second-1][(static_cast<int>(move.second.first))-1].setState(nextPiece);
 }
