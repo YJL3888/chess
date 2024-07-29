@@ -41,7 +41,7 @@ std::pair<Position, Position> Level1::getMove(Board* b) {
 
   ans.first = allMoves.at(random).first;
   ans.second = allMoves.at(random).second.at(allMoves.size());
-  return ans;
+  return Move(ans.first, ans.second);
 };
 
 bool noMoves(vector<PotentialMoves> Moves) {
