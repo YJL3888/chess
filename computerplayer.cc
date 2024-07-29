@@ -32,8 +32,8 @@ Move ComputerPlayer::pickRandomMove(vector<PotentialMoves> Moves) {
   return Move(randomMove.first, randomMove.second);
 }
 
-std::vector<PotentialMoves> getValidMoves(std::vector<PotentialMoves> allMoves,
-                                          Board* b, bool isWhite) {
+std::vector<PotentialMoves> ComputerPlayer::getValidMoves(
+    std::vector<PotentialMoves> allMoves, Board* b, bool isWhite) {
   vector<PotentialMoves> validMoves;
   for (auto m : allMoves) {
     Position first = m.first;
