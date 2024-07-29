@@ -23,7 +23,7 @@ class Square {
     
 public:
     Square(Position position, shared_ptr<ChessPiece>, shared_ptr<Observer> observer);
-    void setState(shared_ptr<ChessPiece>& piece);    // setting chessPiece to the parameter piece
+    void setState(shared_ptr<ChessPiece> piece);    // setting chessPiece to the parameter piece
     shared_ptr<ChessPiece> getState() const;        // return the private field chessPiece
     Piece getPiece() const;     // call respective chess piece's getPiece(), return pair<PieceType, bool>
     Position getPosition();     // get the x and y coordinates in form: pair<xlocation, int>

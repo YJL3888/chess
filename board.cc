@@ -307,14 +307,16 @@ void Board::reverseMove(Move move, bool update){ // reverse the move and switch 
 }
 
 void Board::nextMove(Move move, bool update){ // this is a helper function
-    shared_ptr<ChessPiece> nextOccupant(nullptr);
+    shared_ptr<ChessPiece> nextPiece = nullptr;
+    int row = move.first.second-1;
+    int col = (static_cast<int>(move.first.first))-1;
     if(update){
         moveHistory.push_back(move);
         enPassant(move);
-        if(squares[move.first.second-1][(static_cast<int>(move.first.first))-1].getPiece().first == PieceType::King){
+        if(squares[row][col].getPiece().first == PieceType::King){
             castling(move);
         }
     }
-    squares[move.first.second-1][(static_cast<int>(move.first.first))-1].setState(nextOccupant);
-    squares[move.second.second-1][(static_cast<int>(move.second.first))-1].setState(nextOccupant);
+    squares[move.second.second-1][(static_cast<int>(move.second.first))-1].setState(squares[row][col].getState());
+    squares[row][col].setState(nextPiece);
 }
