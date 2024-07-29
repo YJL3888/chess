@@ -108,7 +108,7 @@ bool Board::commandIntepreter(istream& in, bool printBoard) {
         else if (arg1 == "-") { // removing a piece: - e1
             in >> arg2;
             if (arg2.size() == 2 && 
-                'A' <= toupper(arg2[0]) && toupper(arg2[0]) < 'H' && 
+                'A' <= toupper(arg2[0]) && toupper(arg2[0]) <= 'H' && 
                 '1' <= arg2[1] && arg2[1] <= '8') {
 
                 if (squares[arg2[1] - '1'][toupper(arg2[0]) - 'A'].getState() != nullptr) {
@@ -127,7 +127,7 @@ bool Board::commandIntepreter(istream& in, bool printBoard) {
             in >> arg2;
             if (arg2 == "white") { white = true; } 
             else if (arg2 == "black") { white = false; }
-            else { cout << "Invalid input, only accept either \"= white\" or \"= black\"." <<endl; }
+            else { cout << "Invalid input, only accept either \"white\" or \"black\"." <<endl; }
         }
 
         else if(arg1 == "done") { // end setup phase - check if setup is valid
