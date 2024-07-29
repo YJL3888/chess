@@ -22,6 +22,7 @@ vector<Position> Pawn::validMoves(Position p, Board* b){
     int x = static_cast<int>(p.first);
     int y = p.second;
     bool colour = b->getPiece(p).second;
+    // std::cout << "The colour is " << colour << std::endl;
 
     Position potentialPos;
 

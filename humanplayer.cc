@@ -13,6 +13,16 @@ HumanPlayer::~HumanPlayer() {}
 
 bool HumanPlayer::isValidMove(Board* b, Move move) const {
   std::vector<PotentialMoves> potentialMoves = b->allPotentialMoves(isWhite);
+  // std::cout << "The move we have is from " << move.first.first << " " << move.first.second << " to " << move.second.first << " " << move.second.second << std::endl;
+  // for testing purposes
+  // std::cout << "I am in isValidMove" << std::endl;
+  // for(const auto& moves: potentialMoves){
+  //   std::cout << "Move from Position " << moves.first.first << " " << moves.first.second << " to Positions: " << std::endl;
+  //   for(const auto& end: moves.second){
+  //     std::cout << end.first << " " << end.second << std::endl;
+  //   }
+  // }
+
   for (const auto& moves : potentialMoves) {
     if (moves.first == move.first) {
       for (const auto& end : moves.second) {
@@ -42,10 +52,12 @@ Move HumanPlayer::getMove(Board* b) {
     }
 
     char firstLetter = toupper(first[0]);
-    xlocation firstLetterxLoc = static_cast<xlocation>(firstLetter);
+    // xlocation firstLetterxLoc = static_cast<xlocation>(firstLetter);
+    xlocation firstLetterxLoc = chartoXlocation(firstLetter);
 
     char secondLetter = toupper(second[0]);
-    xlocation secondLetterxLoc = static_cast<xlocation>(secondLetter);
+    // xlocation secondLetterxLoc = static_cast<xlocation>(secondLetter);
+    xlocation secondLetterxLoc = chartoXlocation(secondLetter);
 
     int firstNum = first[1] - '0';
     int secondNum = second[1] - '0';

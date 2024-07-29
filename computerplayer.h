@@ -5,7 +5,7 @@
 #include "types.h"
 
 class ComputerPlayer : public Player {
-  bool isWhite;
+  // bool isWhite;
 
  public:
   ComputerPlayer(bool isWhite);
