@@ -35,6 +35,11 @@ Board::Board(): squares{}, textDisplay {make_shared<TextDisplay>()} { // later a
     // add this for GUI: gui->update(textDisplay);
 }
 
+Board::~Board(){
+    // delete gui;
+    // delete td;
+}
+
 /*
 operator<< overload, friend in Board Class.
 Outputs the board. 
@@ -225,4 +230,85 @@ void Board::promote(Position pos, char c){
         default: break;
     }
     squares[pos.second-1][pos.first-1].setState(newPiece);
+}
+
+
+Piece Board::getPiece(Position p){
+    return squares[p.second-1][(static_cast<int>(p.first))-1].getPiece();
+}
+
+bool Board::isFirstMove(Position p){
+    return squares[p.second-1][(static_cast<int>(p.first))-1].getNumMoves() == 0;
+}
+
+Move Board::previousMove(){
+    if(moveHistory.size() > 0){
+        return moveHistory.back();
+    }
+    return {{static_cast<xlocation>(1),0},{static_cast<xlocation>(1),0}}; // the default
+}
+
+int Board::numMoves(Position p){
+    return squares[p.second-1][(static_cast<int>(p.first))-1].getNumMoves();
+}
+
+std::vector<PotentialMoves> Board::allPotentialMoves(bool colour){
+    std::vector<PotentialMoves> potentialMoves;
+    for(vector<Square>& line: squares){
+        for(Square& square: line){
+            if(square.getPiece().first != PieceType::Empty && square.getPiece().second == colour){
+                potentialMoves.push_back({square.getPosition(), square.getPossibleMoves(this)});
+            }
+        }
+    }
+    return potentialMoves;
+}
+
+
+bool Board::inCheck(bool colour){ //return if colour is in check
+    std::vector<PotentialMoves> potentialMoves = allPotentialMoves(!colour);
+    for(const PotentialMoves& moves : potentialMoves){
+        if(getPiece(moves.first).second != colour){
+            for(const Position& destination: moves.second){
+                if(getPiece(destination).first == PieceType::King && getPiece(destination).second == colour){
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+void Board::testMove(Move move, bool update){ // this is mainly used in king
+    if(!update){
+        squares[move.first.second-1][(static_cast<int>(move.first.first))-1].minusMoves();
+        squares[move.first.second-1][(static_cast<int>(move.first.first))-1].minusMoves();
+    }
+    squares[move.second.second-1][((int)move.second.first)-1].check();
+    nextMove(move, update);
+}
+
+void Board::reverseMove(Move move, bool update){ // reverse the move and switch back to actual piece instead of temp - used in king
+    nextMove(move, false);
+    if(update){
+        squares[move.first.second-1][(static_cast<int>(move.first.first))-1].minusMoves();
+        if(moveHistory.size() > 0){
+            moveHistory.pop_back();     
+        }
+    }
+    squares[move.first.second-1][(static_cast<int>(move.first.first))-1].undoCheck();
+}
+
+void Board::nextMove(Move move, bool update){ // this is a help function
+    //should handle deleting killed cells
+    std::shared_ptr<ChessPiece> nextOccupant(nullptr);
+    if(update){
+        moveHistory.push_back(move);
+        enPassant(move);
+        if(squares[move.first.second-1][(static_cast<int>(move.first.first))-1].getPiece().first == PieceType::King){
+            castling(move);
+        }
+    }
+    squares[move.first.second-1][((int)move.first.first)-1].setState(nextOccupant);
+    squares[move.second.second-1][((int)move.second.first)-1].setState(nextOccupant);
 }

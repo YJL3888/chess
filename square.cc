@@ -39,6 +39,27 @@ int Square::getNumMoves(){
     return 0;
 }
 
+void Square::minusMoves(){
+    if(chessPiece){
+        chessPiece->decrementMoves();
+    }
+}
+
+void Square::check(){
+    chessPiece.swap(tempChessPiece);
+    notifyObservers();
+}
+
+void Square::undoCheck(){
+    minusMoves();
+    chessPiece.swap(tempChessPiece);
+    notifyObservers();
+}
+
+std::vector<Position> Square::getPossibleMoves(Board* b){
+    return chessPiece->validMoves(this->getPosition(), b);
+}
+
 void Square::notifyObservers() {
     Square temp{getPosition(), chessPiece};
     observers[0] -> notify(temp);

@@ -13,6 +13,7 @@ class Board;
 
 class Square {
     shared_ptr<ChessPiece> chessPiece;  // chess piece with Piece and other info
+    shared_ptr<ChessPiece> tempChessPiece; // chess piece used in the check()
     Position position;                  // xy coordinate in form: pair<xlocation, int>
     vector<shared_ptr<Observer>> observers;        // list of observers attached
     Square(Position position, shared_ptr<ChessPiece>);
@@ -26,6 +27,10 @@ public:
     Piece getPiece() const;     // call respective chess piece's getPiece(), return pair<PieceType, bool>
     Position getPosition();     // get the x and y coordinates in form: pair<xlocation, int>
     int getNumMoves(); // return the number of moves made
+    void minusMoves(); // reduce the number of moves
+    void check(); // try a move using a test chessPiece
+    void undoCheck(); // swap back to the actual chessPiece
+    std::vector<Position> getPossibleMoves(Board*); // return all the available moves for a given chessPiece
     ~Square();
 };
 
