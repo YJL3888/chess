@@ -8,29 +8,10 @@ Level2::~Level2() {}
 
 Move Level2::getMove(Board* b) {
   vector<PotentialMoves> moves = b->allPotentialMoves(isWhite);
-  vector<PotentialMoves> allMoves;
-  for (auto m : moves) {
-    Position first = m.first;
-    std::vector<Position> second = m.second;
-    PotentialMoves currentMoves;
-    currentMoves.first = first;
-    currentMoves.second = {};
-    for (auto s : second) {
-      Move makeMove = std::make_pair(first, s);
-      Move undoMove = std::make_pair(s, first);
-      b->testMove(makeMove, false);
-      if (!b->inCheck(isWhite)) {
-        currentMoves.second.emplace_back(s);
-      }
-      b->reverseMove(undoMove, false);
-    }
-    if (!currentMoves.second.empty()) {
-      allMoves.emplace_back(currentMoves);
-    }
-  }
+  vector<PotentialMoves> allMoves =
+      ComputerPlayer::getValidMoves(moves, b, isWhite);
 
   Move ans = std::make_pair(std::make_pair(Z, -2), std::make_pair(Z, -2));
-  // vector<PotentialMoves> moves = b->allPotentialMoves(isWhite);
 
   // prioritize move that checks
   for (auto m : moves) {

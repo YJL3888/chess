@@ -14,6 +14,8 @@ class ComputerPlayer : public Player {
   PlayerType getPlayerType() const override { return PlayerType::computer; }
   bool noMoves(std::vector<PotentialMoves> Moves);
   Move pickRandomMove(std::vector<PotentialMoves> Moves);
+  std::vector<PotentialMoves> getValidMoves(std::vector<PotentialMoves> all,
+                                            Board* b, bool isWhite);
 };
 
 #endif
