@@ -13,7 +13,12 @@ Square::Square(Position position, shared_ptr<ChessPiece> chessPiece, shared_ptr<
 }
 
 void Square::setState(shared_ptr<ChessPiece> piece) {
-    chessPiece = piece;
+    // chessPiece = piece;
+    if(chessPiece){
+        chessPiece->incrementMoves();
+    }
+    chessPiece.swap(piece);
+    notifyObservers();
 }
 
 shared_ptr<ChessPiece> Square::getState() const {
@@ -62,7 +67,7 @@ std::vector<Position> Square::getPossibleMoves(Board* b){
 
 void Square::notifyObservers() {
     Square temp{getPosition(), chessPiece};
-    observers[0] -> notify(temp);
+    observers[0]->notify(temp);
 }
 
 void Square::attach(shared_ptr<Observer> observer) {

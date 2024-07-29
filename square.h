@@ -13,7 +13,7 @@ class Board;
 
 class Square {
     shared_ptr<ChessPiece> chessPiece;  // chess piece with Piece and other info
-    shared_ptr<ChessPiece> tempChessPiece; // chess piece used in the check()
+    shared_ptr<ChessPiece> tempChessPiece = nullptr; // chess piece used in the check()
     Position position;                  // xy coordinate in form: pair<xlocation, int>
     vector<shared_ptr<Observer>> observers;        // list of observers attached
     Square(Position position, shared_ptr<ChessPiece>);

@@ -63,7 +63,7 @@ including adding piece ("+ K e1"), removing piece ("- e1"), and setup done ("don
 to check validity.
 */
 bool Board::commandIntepreter(istream& in, bool printBoard) {
-    std::string arg1, arg2, arg3;
+    string arg1, arg2, arg3;
     bool white = true;
     bool valid = false;
     do {
@@ -173,7 +173,7 @@ bool Board::commandIntepreter(istream& in, bool printBoard) {
 void Board::castling(Move move) {
     // Move is of type: pair<pair<xlocation, int>, pair<xlocation, int>>
     // basically (x1, y1), (x2, y2)
-    std::shared_ptr<ChessPiece> emptyState = nullptr;
+    shared_ptr<ChessPiece> emptyState = nullptr;
 
     int kingRow = move.first.second - 1;
     int kingStartCol = static_cast<int>(move.first.first) - 1;
@@ -204,7 +204,7 @@ void Board::castling(Move move) {
 void Board::enPassant(Move move) {
     // Move is of type: pair<pair<xlocation, int>, pair<xlocation, int>>
     // basically (x1, y1), (x2, y2)
-    std::shared_ptr<ChessPiece> emptyState = nullptr;
+    shared_ptr<ChessPiece> emptyState = nullptr;
 
     int startX = static_cast<int>(move.first.first) - 1;
     int startY = move.first.second - 1;
@@ -260,7 +260,7 @@ int Board::numMoves(Position p){
 }
 
 std::vector<PotentialMoves> Board::allPotentialMoves(bool colour){
-    std::vector<PotentialMoves> potentialMoves;
+    vector<PotentialMoves> potentialMoves;
     for(vector<Square>& line: squares){
         for(Square& square: line){
             if(square.getPiece().first != PieceType::Empty && square.getPiece().second == colour){
@@ -273,7 +273,7 @@ std::vector<PotentialMoves> Board::allPotentialMoves(bool colour){
 
 
 bool Board::inCheck(bool colour){ //return if colour is in check
-    std::vector<PotentialMoves> potentialMoves = allPotentialMoves(!colour);
+    vector<PotentialMoves> potentialMoves = allPotentialMoves(!colour);
     for(const PotentialMoves& moves : potentialMoves){
         if(getPiece(moves.first).second != colour){
             for(const Position& destination: moves.second){
@@ -291,7 +291,7 @@ void Board::testMove(Move move, bool update){ // this is mainly used in king
         squares[move.first.second-1][(static_cast<int>(move.first.first))-1].minusMoves();
         squares[move.first.second-1][(static_cast<int>(move.first.first))-1].minusMoves();
     }
-    squares[move.second.second-1][((int)move.second.first)-1].check();
+    squares[move.second.second-1][(static_cast<int>(move.second.first))-1].check();
     nextMove(move, update);
 }
 
@@ -307,7 +307,7 @@ void Board::reverseMove(Move move, bool update){ // reverse the move and switch 
 }
 
 void Board::nextMove(Move move, bool update){ // this is a helper function
-    std::shared_ptr<ChessPiece> nextOccupant(nullptr);
+    shared_ptr<ChessPiece> nextOccupant(nullptr);
     if(update){
         moveHistory.push_back(move);
         enPassant(move);
