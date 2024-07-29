@@ -2,7 +2,7 @@
 
 Level1::Level1(bool isWhite) : ComputerPlayer(isWhite) {};
 
-bool noMoves(vector<PotentialMoves> Moves) {
+bool Level1::noMoves(vector<PotentialMoves> Moves) {
   for (auto m : Moves) {
     if (!m.second.empty()) {
       return false;

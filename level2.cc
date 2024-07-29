@@ -6,6 +6,15 @@ Level2::Level2(bool isWhite) : ComputerPlayer(isWhite) {
 
 Level2::~Level2() {}
 
+bool Level2::noMoves(vector<PotentialMoves> Moves) {
+  for (auto m : Moves) {
+    if (!m.second.empty()) {
+      return false;
+    }
+  }
+  return true;
+}
+
 Move Level2::getMove(Board* b) {
   vector<PotentialMoves> moves = b->allPotentialMoves(isWhite);
   vector<PotentialMoves> allMoves;
@@ -96,13 +105,4 @@ Move Level2::getMove(Board* b) {
     ans.second = allMoves.at(random).second.at(allMoves.size());
     return ans;
   }
-}
-
-bool noMoves(vector<PotentialMoves> Moves) {
-  for (auto m : Moves) {
-    if (!m.second.empty()) {
-      return false;
-    }
-  }
-  return true;
 }
