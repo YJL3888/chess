@@ -12,7 +12,8 @@ class ComputerPlayer : public Player {
   virtual ~ComputerPlayer() override;
   virtual Move getMove(Board* b) override = 0;  // Pure virtual function
   PlayerType getPlayerType() const override { return PlayerType::computer; }
-  bool noMoves(vector<PotentialMoves> Moves);
+  bool noMoves(std::vector<PotentialMoves> Moves);
+  Move pickRandomMove(std::vector<PotentialMoves> Moves);
 };
 
 #endif

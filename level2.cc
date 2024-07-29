@@ -68,32 +68,10 @@ Move Level2::getMove(Board* b) {
   }
 
   if (!movesList.empty()) {
-    if (ComputerPlayer::noMoves(movesList)) {
-      Move staleMate =
-          std::make_pair(std::make_pair(Y, -1), std::make_pair(Y, -1));
-      return staleMate;
-    }
-    int random = rand() % movesList.size();
-    while (movesList.at(random).second.empty()) {
-      random = rand() % movesList.size();
-    }
-
-    ans.first = movesList.at(random).first;
-    ans.second = movesList.at(random).second.at(movesList.size());
-    return ans;
+    return ComputerPlayer::pickRandomMove(
+        movesList);  // if there are moves that checks, randomly pick in those
   } else {
-    if (ComputerPlayer::noMoves(allMoves)) {
-      Move staleMate =
-          std::make_pair(std::make_pair(Y, -1), std::make_pair(Y, -1));
-      return staleMate;
-    }
-    int random = rand() % allMoves.size();
-    while (allMoves.at(random).second.empty()) {
-      random = rand() % allMoves.size();
-    }
-
-    ans.first = allMoves.at(random).first;
-    ans.second = allMoves.at(random).second.at(allMoves.size());
-    return ans;
+    return ComputerPlayer::pickRandomMove(
+        allMoves);  // else return a random move
   }
 }

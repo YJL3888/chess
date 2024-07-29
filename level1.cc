@@ -1,6 +1,7 @@
 #include "level1.h"
 
 Level1::Level1(bool isWhite) : ComputerPlayer(isWhite) {};
+Level1::~Level1() {}
 
 std::pair<Position, Position> Level1::getMove(Board* b) {
   vector<PotentialMoves> moves = b->allPotentialMoves(isWhite);
@@ -25,23 +26,5 @@ std::pair<Position, Position> Level1::getMove(Board* b) {
     }
   }
 
-  Move ans;
-
-  if (ComputerPlayer::noMoves(allMoves)) {
-    Move staleMate =
-        std::make_pair(std::make_pair(Y, -1), std::make_pair(Y, -1));
-    return staleMate;
-  }
-
-  int random = rand() % allMoves.size();
-
-  while (allMoves.at(random).second.empty()) {
-    random = rand() % allMoves.size();
-  }
-
-  ans.first = allMoves.at(random).first;
-  ans.second = allMoves.at(random).second.at(allMoves.size());
-  return Move(ans.first, ans.second);
+  return ComputerPlayer::pickRandomMove(allMoves);
 };
-
-Level1::~Level1() {}
