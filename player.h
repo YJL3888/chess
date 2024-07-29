@@ -6,6 +6,8 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
+#include "types.h"
+
 class Player {
  private:
   bool isWhite;
@@ -16,6 +18,9 @@ class Player {
   bool isCheckMate(Board*, bool);
   bool isStaleMate(Board*, bool);
   virtual Move getMove(Board*) = 0;  // move is a pair of positions
+
+  // need something to support: Player p1->getPlayerType() that returns PlayerType::computer or PlayerType::human
+  PlayerType getPlayerType();
 };
 
 #endif

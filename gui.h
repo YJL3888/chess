@@ -1,6 +1,7 @@
 #ifndef GUI_H
 #define GUI_H
 #include "gui.h"
+#include <memory>
 using namespace std;
 
 class TextDisplay;

@@ -12,8 +12,6 @@ class Game {
     Board* b;
     Player* p1;
     Player* p2;
-    std::vector<Move> moveHistory;
-    std::vector<Move> redoHistory;
     bool isWhite;
     bool checkmate;
     bool startGame;
@@ -26,6 +24,8 @@ class Game {
     void play();
     void undo();
     void redo();
+    void ComputerDifficulty(int difficulty, Player* computerPlayer, bool isWhite);
+
 };
 
 #endif
