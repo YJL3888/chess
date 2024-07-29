@@ -5,7 +5,7 @@
 #include "player.h"
 
 class HumanPlayer: public Player{
-  bool isWhite;
+  // bool isWhite;
 
  public:
   HumanPlayer(bool isWhite);

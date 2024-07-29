@@ -9,7 +9,7 @@
 #include "types.h"
 
 class Player {
- private:
+ protected:
   bool isWhite;
 
  public:

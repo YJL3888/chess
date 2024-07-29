@@ -8,8 +8,8 @@ class Level1 : public ComputerPlayer {
 
  public:
   Level1(bool isWhite);
-  ~Level1() override;
   Move getMove(Board* b) override;
+  ~Level1() override;
 };
 
 #endif

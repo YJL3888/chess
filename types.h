@@ -27,6 +27,8 @@ enum xlocation {
   Z = -2   // Checkmate
 };
 
+xlocation chartoXlocation(char c);
+
 enum class PlayerType {
     human,
     computer

@@ -260,6 +260,7 @@ int Board::numMoves(Position p){
 }
 
 std::vector<PotentialMoves> Board::allPotentialMoves(bool colour){
+    // std::cout << "The colour is " << colour << " in all Potential Moves" << std::endl;
     vector<PotentialMoves> potentialMoves;
     for(vector<Square>& line: squares){
         for(Square& square: line){
@@ -268,6 +269,15 @@ std::vector<PotentialMoves> Board::allPotentialMoves(bool colour){
             }
         }
     }
+
+    // // testing purpose
+    // std::cout << "I am in allPotentialMoves" << std::endl;
+    // for(const auto& moves: potentialMoves){
+    //     std::cout << "Move from Position " << moves.first.first << " " << moves.first.second << " to Positions: " << std::endl;
+    //     for(const auto& end: moves.second){
+    //     std::cout << end.first << " " << end.second << std::endl;
+    //     }
+    // }
     return potentialMoves;
 }
 
