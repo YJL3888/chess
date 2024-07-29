@@ -125,12 +125,12 @@ void Game::play() {
                 if (isWhite && p1->getPlayerType() == PlayerType::computer) {
                     cout << "White computer is making a move" << endl;
                     Move move = p1->getMove(b);
-                    if (move.second.second == -1) { //checkmate?
-                        endGame('w');
+                    if (move.second.second == -1) { // Stalemate - draw
+                        endGame('d');
                         continue;
                     }
-                    if (move.second.second == -2) {
-                        endGame('d');
+                    if (move.second.second == -2) { // checkmate - win
+                        endGame('w');
                         continue;
                     }
                 }
@@ -138,12 +138,12 @@ void Game::play() {
                 if (!isWhite && p2->getPlayerType() == PlayerType::computer) {
                     cout << "Black computer is making a move" << endl;
                     Move move = p2->getMove(b);
-                    if (move.second.second == -1) { //checkmate?
-                        endGame('w');
+                    if (move.second.second == -1) { // Stalemate - draw
+                        endGame('d');
                         continue;
                     }
-                    if (move.second.second == -2) {
-                        endGame('d');
+                    if (move.second.second == -2) { // checkmate - win
+                        endGame('w');
                         continue;
                     }
                 }
@@ -151,12 +151,12 @@ void Game::play() {
                 if (!isWhite && p2->getPlayerType() == PlayerType::human) {
                     cout << "Human (black side) is making a move" << endl;
                     Move move = p2->getMove(b);
-                    if (move.second.second == -1) { //checkmate?
-                        endGame('w');
+                    if (move.second.second == -1) { // Stalemate - draw
+                        endGame('d');
                         continue;
                     }
-                    if (move.second.second == -2) {
-                        endGame('d');
+                    if (move.second.second == -2) { // checkmate - win
+                        endGame('w');
                         continue;
                     }
                 }
@@ -164,12 +164,12 @@ void Game::play() {
                 if (isWhite && p1->getPlayerType() == PlayerType::human) {
                     cout << "Human (white side)  is making a move" << endl;
                     Move move = p1->getMove(b);
-                    if (move.second.second == -1) { //checkmate?
-                        endGame('w');
+                    if (move.second.second == -1) { // Stalemate - draw
+                        endGame('d');
                         continue;
                     }
-                    if (move.second.second == -2) {
-                        endGame('d');
+                    if (move.second.second == -2) { // checkmate - win
+                        endGame('w');
                         continue;
                     }
                 }
