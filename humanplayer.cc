@@ -104,16 +104,16 @@ Move HumanPlayer::getMove(Board* b) {
       } else {
         std::cout << "White player is in check\n";
       }
-      if (isCheckMate(b, this->isWhite)) {
-        if (isStaleMate(b, this->isWhite)) {
-          Move stalemate =
-              std::make_pair(std::make_pair(Y, -1), std::make_pair(Y, -1));
-          return stalemate;
-        }
-        Move checkmate =
-            std::make_pair(std::make_pair(Z, -2), std::make_pair(Z, -2));
-        return checkmate;
+    }
+    if (isCheckMate(b, this->isWhite)) {
+      if (isStaleMate(b, this->isWhite)) {
+        Move stalemate =
+            std::make_pair(std::make_pair(Y, -1), std::make_pair(Y, -1));
+        return stalemate;
       }
+      Move checkmate =
+          std::make_pair(std::make_pair(Z, -2), std::make_pair(Z, -2));
+      return checkmate;
     }
   }
   return move;
