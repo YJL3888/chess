@@ -12,7 +12,7 @@ Square::Square(Position position, shared_ptr<ChessPiece> chessPiece, shared_ptr<
     notifyObservers();
 }
 
-void Square::setState(shared_ptr<ChessPiece> piece) {
+void Square::setState(shared_ptr<ChessPiece>& piece) {
     // chessPiece = piece;
     if(chessPiece){
         chessPiece->incrementMoves();
