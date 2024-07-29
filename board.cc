@@ -306,7 +306,7 @@ void Board::reverseMove(Move move, bool update){ // reverse the move and switch 
     squares[move.first.second-1][(static_cast<int>(move.first.first))-1].undoCheck();
 }
 
-void Board::nextMove(Move move, bool update){ // this is a help function
+void Board::nextMove(Move move, bool update){ // this is a helper function
     //should handle deleting killed cells
     std::shared_ptr<ChessPiece> nextOccupant(nullptr);
     if(update){
@@ -316,6 +316,6 @@ void Board::nextMove(Move move, bool update){ // this is a help function
             castling(move);
         }
     }
-    squares[move.first.second-1][((int)move.first.first)-1].setState(nextOccupant);
-    squares[move.second.second-1][((int)move.second.first)-1].setState(nextOccupant);
+    squares[move.first.second-1][(static_cast<int>(move.first.first))-1].setState(nextOccupant);
+    squares[move.second.second-1][(static_cast<int>(move.second.first))-1].setState(nextOccupant);
 }
