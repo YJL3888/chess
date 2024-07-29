@@ -128,4 +128,5 @@ vector<Position> Pawn::validMoves(Position p, Board* b){
             }
         }
     }
+    return locations;
 }

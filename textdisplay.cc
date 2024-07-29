@@ -23,7 +23,7 @@ void TextDisplay::notify(Square& s) {
         case PieceType::King: character = 'K'; break;
         default: character = (posXY.first + posXY.second) % 2 == 1 ? ' ' : '_'; // show underline for a black/shaded square to create checker.
     }
-    if (s.getPiece().second == 0) {
+    if (s.getPiece().second == 0 && character <= 'Z' && character >= 'A') {
         character += 32; //convert to lower case letters for black player.
     }
     display[8-posXY.second][posXY.first-1] = character; //display[y][x] = char
@@ -41,6 +41,10 @@ ostream& operator<<(ostream& out, const TextDisplay& textDisplay) {
         }
         out << endl; // new line after each row.
     }
-    out << endl << "  abcdefgh" << endl; // prints the bottom row index.
+    out << endl << "  abcdefgh\n\n" << endl; // prints the bottom row index.
     return out;
+}
+
+TextDisplay::~TextDisplay() {
+    // Implementation of TextDisplay destructor
 }

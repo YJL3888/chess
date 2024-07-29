@@ -35,6 +35,11 @@ Board::Board(): squares{}, textDisplay {make_shared<TextDisplay>()} { // later a
     // add this for GUI: gui->update(textDisplay);
 }
 
+Board::~Board(){
+    // delete gui;
+    // delete td;
+}
+
 /*
 operator<< overload, friend in Board Class.
 Outputs the board. 
@@ -58,7 +63,7 @@ including adding piece ("+ K e1"), removing piece ("- e1"), and setup done ("don
 to check validity.
 */
 bool Board::commandIntepreter(istream& in, bool printBoard) {
-    std::string arg1, arg2, arg3;
+    string arg1, arg2, arg3;
     bool white = true;
     bool valid = false;
     do {
@@ -76,20 +81,20 @@ bool Board::commandIntepreter(istream& in, bool printBoard) {
                  '1' <= arg3[1] && arg3[1] <= '8') { // if condition checking for valid adding piece command
                 
                 shared_ptr<ChessPiece> piece;
-                switch (toupper(arg2[0])) {
-                    case 'P': piece = std::make_shared<Pawn>(false); break;
-                    case 'R': piece = std::make_shared<Bishop>(false); break;
-                    case 'N': piece = std::make_shared<Knight>(false); break;
-                    case 'B': piece = std::make_shared<Rook>(false); break;
-                    case 'Q': piece = std::make_shared<Queen>(false); break;
-                    case 'K': piece = std::make_shared<King>(false); break;
+                switch (arg2[0]) {
+                    case 'P': piece = std::make_shared<Pawn>(true); break;
+                    case 'R': piece = std::make_shared<Rook>(true); break;
+                    case 'N': piece = std::make_shared<Knight>(true); break;
+                    case 'B': piece = std::make_shared<Bishop>(true); break;
+                    case 'Q': piece = std::make_shared<Queen>(true); break;
+                    case 'K': piece = std::make_shared<King>(true); break;
 
-                    case 'p': piece = std::make_shared<Pawn>(true); break;
-                    case 'r': piece = std::make_shared<Bishop>(true); break;
-                    case 'n': piece = std::make_shared<Knight>(true); break;
-                    case 'b': piece = std::make_shared<Rook>(true); break;
-                    case 'q': piece = std::make_shared<Queen>(true); break;
-                    case 'k': piece = std::make_shared<King>(true); break;
+                    case 'p': piece = std::make_shared<Pawn>(false); break;
+                    case 'r': piece = std::make_shared<Rook>(false); break;
+                    case 'n': piece = std::make_shared<Knight>(false); break;
+                    case 'b': piece = std::make_shared<Bishop>(false); break;
+                    case 'q': piece = std::make_shared<Queen>(false); break;
+                    case 'k': piece = std::make_shared<King>(false); break;
                 }
                 squares[arg3[1] - '1'][toupper(arg3[0]) - 'A'].setState(piece);
                 if (printBoard) {
@@ -168,7 +173,7 @@ bool Board::commandIntepreter(istream& in, bool printBoard) {
 void Board::castling(Move move) {
     // Move is of type: pair<pair<xlocation, int>, pair<xlocation, int>>
     // basically (x1, y1), (x2, y2)
-    std::shared_ptr<ChessPiece> emptyState = nullptr;
+    shared_ptr<ChessPiece> emptyState = nullptr;
 
     int kingRow = move.first.second - 1;
     int kingStartCol = static_cast<int>(move.first.first) - 1;
@@ -199,7 +204,7 @@ void Board::castling(Move move) {
 void Board::enPassant(Move move) {
     // Move is of type: pair<pair<xlocation, int>, pair<xlocation, int>>
     // basically (x1, y1), (x2, y2)
-    std::shared_ptr<ChessPiece> emptyState = nullptr;
+    shared_ptr<ChessPiece> emptyState = nullptr;
 
     int startX = static_cast<int>(move.first.first) - 1;
     int startY = move.first.second - 1;
@@ -232,4 +237,86 @@ void Board::promote(Position pos, char c){
         default: break;
     }
     squares[pos.second-1][pos.first-1].setState(newPiece);
+}
+
+
+Piece Board::getPiece(Position p){
+    return squares[p.second-1][(static_cast<int>(p.first))-1].getPiece();
+}
+
+bool Board::isFirstMove(Position p){
+    return squares[p.second-1][(static_cast<int>(p.first))-1].getNumMoves() == 0;
+}
+
+Move Board::previousMove(){
+    if(moveHistory.size() > 0){
+        return moveHistory.back();
+    }
+    return {{static_cast<xlocation>(1),0},{static_cast<xlocation>(1),0}}; // the default
+}
+
+int Board::numMoves(Position p){
+    return squares[p.second-1][(static_cast<int>(p.first))-1].getNumMoves();
+}
+
+std::vector<PotentialMoves> Board::allPotentialMoves(bool colour){
+    vector<PotentialMoves> potentialMoves;
+    for(vector<Square>& line: squares){
+        for(Square& square: line){
+            if(square.getPiece().first != PieceType::Empty && square.getPiece().second == colour){
+                potentialMoves.push_back({square.getPosition(), square.getPossibleMoves(this)});
+            }
+        }
+    }
+    return potentialMoves;
+}
+
+
+bool Board::inCheck(bool colour){ //return if colour is in check
+    vector<PotentialMoves> potentialMoves = allPotentialMoves(!colour);
+    for(const PotentialMoves& moves : potentialMoves){
+        if(getPiece(moves.first).second != colour){
+            for(const Position& destination: moves.second){
+                if(getPiece(destination).first == PieceType::King && getPiece(destination).second == colour){
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+void Board::testMove(Move move, bool update){ // this is mainly used in king
+    if(!update){
+        squares[move.first.second-1][(static_cast<int>(move.first.first))-1].minusMoves();
+        squares[move.first.second-1][(static_cast<int>(move.first.first))-1].minusMoves();
+    }
+    squares[move.second.second-1][(static_cast<int>(move.second.first))-1].check();
+    nextMove(move, update);
+}
+
+void Board::reverseMove(Move move, bool update){ // reverse the move and switch back to actual piece instead of temp - used in king
+    nextMove(move, false);
+    if(update){
+        squares[move.first.second-1][(static_cast<int>(move.first.first))-1].minusMoves();
+        if(moveHistory.size() > 0){
+            moveHistory.pop_back();     
+        }
+    }
+    squares[move.first.second-1][(static_cast<int>(move.first.first))-1].undoCheck();
+}
+
+void Board::nextMove(Move move, bool update){ // this is a helper function
+    shared_ptr<ChessPiece> nextPiece = nullptr;
+    int row = move.first.second-1;
+    int col = (static_cast<int>(move.first.first))-1;
+    if(update){
+        moveHistory.push_back(move);
+        enPassant(move);
+        if(squares[row][col].getPiece().first == PieceType::King){
+            castling(move);
+        }
+    }
+    squares[move.second.second-1][(static_cast<int>(move.second.first))-1].setState(squares[row][col].getState());
+    squares[row][col].setState(nextPiece);
 }

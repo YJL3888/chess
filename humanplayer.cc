@@ -9,6 +9,8 @@ class Board;
 
 HumanPlayer::HumanPlayer(bool isWhite) : Player(isWhite) {};
 
+HumanPlayer::~HumanPlayer() {}
+
 bool HumanPlayer::isValidMove(Board* b, Move move) const {
   std::vector<PotentialMoves> potentialMoves = b->allPotentialMoves(isWhite);
   for (const auto& moves : potentialMoves) {

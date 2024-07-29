@@ -13,7 +13,8 @@ class Board {
   vector<vector<Square>> squares;
   shared_ptr<TextDisplay> textDisplay;
   unique_ptr<GUI> gui;
-  Move moveList;
+  vector<Move> moveHistory;
+  vector<Move> redoHistory;
   void enPassant(Move);
   void castling(Move);
 
@@ -33,6 +34,7 @@ class Board {
   bool inCheck(bool);                 // check if this colour is in check
   void testMove(Move, bool = false);  // bool is whether we perform this move or
                                       // not, default is false
+  void nextMove(Move move, bool update);
   void reverseMove(Move, bool = false);
   void promote(Position p, char promotedPiece);
 

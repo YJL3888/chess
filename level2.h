@@ -6,7 +6,8 @@
 class Level2 : public ComputerPlayer {
 public:
     Level2(bool isWhite);
-    std::pair<Position, Position> getMove(Board* board) override;
+    ~Level2() override;
+    Move getMove(Board* b) override;
 };
 
 #endif
