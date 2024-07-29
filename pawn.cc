@@ -36,7 +36,7 @@ vector<Position> Pawn::validMoves(Position p, Board* b){
             locations.push_back(potentialPos);
             // if it's the first move, then it can move one more
             potentialPos.second = potentialPos.second-1;
-            if(isFirstMove && y-2>=1 && static_cast<int>(b->getPiece(potentialPos).first) == 0){
+            if(numMoves == 0 && y-2>=1 && static_cast<int>(b->getPiece(potentialPos).first) == 0){
                 locations.push_back(potentialPos);
             }
         }
@@ -54,8 +54,9 @@ vector<Position> Pawn::validMoves(Position p, Board* b){
                 }
             }
             // normal capture
+            potentialPos.first = static_cast<xlocation>(x+1);
             potentialPos.second = y-1;
-            if(static_cast<int>(b->getPiece(potentialPos).first) == 0 && b->getPiece(p).second != b->getPiece(potentialPos).second){
+            if(static_cast<int>(b->getPiece(potentialPos).first) != 0 && b->getPiece(p).second != b->getPiece(potentialPos).second){
                 locations.push_back(potentialPos);
             }
             
@@ -73,8 +74,9 @@ vector<Position> Pawn::validMoves(Position p, Board* b){
                 }
             }
             // normal capture
+            potentialPos.first = static_cast<xlocation>(x-1);
             potentialPos.second = y-1;
-            if(static_cast<int>(b->getPiece(potentialPos).first) == 0 && b->getPiece(p).second != b->getPiece(potentialPos).second){
+            if(static_cast<int>(b->getPiece(potentialPos).first) != 0 && b->getPiece(p).second != b->getPiece(potentialPos).second){
                 locations.push_back(potentialPos);
             }
         }
@@ -87,7 +89,7 @@ vector<Position> Pawn::validMoves(Position p, Board* b){
             locations.push_back(potentialPos);
             // if it's the first move, then it can move one more
             potentialPos.second = potentialPos.second+1;
-            if(isFirstMove && y+2<=8 && static_cast<int>(b->getPiece(potentialPos).first) == 0){
+            if(numMoves == 0 && y+2<=8 && static_cast<int>(b->getPiece(potentialPos).first) == 0){
                 locations.push_back(potentialPos);
             }
         }
@@ -105,8 +107,9 @@ vector<Position> Pawn::validMoves(Position p, Board* b){
                 }
             }
             // normal capture
+            potentialPos.first = static_cast<xlocation>(x+1);
             potentialPos.second = y+1;
-            if(static_cast<int>(b->getPiece(potentialPos).first) == 0 && b->getPiece(p).second != b->getPiece(potentialPos).second){
+            if(static_cast<int>(b->getPiece(potentialPos).first) != 0 && b->getPiece(p).second != b->getPiece(potentialPos).second){
                 locations.push_back(potentialPos);
             }
         }
@@ -123,8 +126,9 @@ vector<Position> Pawn::validMoves(Position p, Board* b){
                 }
             }
             // normal capture
+            potentialPos.first = static_cast<xlocation>(x-1);
             potentialPos.second = y+1;
-            if(static_cast<int>(b->getPiece(potentialPos).first) == 0 && b->getPiece(p).second != b->getPiece(potentialPos).second){
+            if(static_cast<int>(b->getPiece(potentialPos).first) != 0 && b->getPiece(p).second != b->getPiece(potentialPos).second){
                 locations.push_back(potentialPos);
             }
         }

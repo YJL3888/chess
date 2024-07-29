@@ -6,7 +6,7 @@ using namespace std;
 
 class Rook: public ChessPiece {
     private:
-        bool isFirstMove = numMoves == 0;
+        // bool isFirstMove = numMoves == 0;
     public:
         Rook(bool);
 

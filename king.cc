@@ -51,7 +51,7 @@ vector<Position> King::validMoves(Position p, Board* b){
 	
     p1.first = static_cast<xlocation>(7);
     p2.first = static_cast<xlocation>(8);
-    if(isFirstMove && b->isFirstMove(p2) && x == 5 && static_cast<int>(b->getPiece(potentialPos).first) == 0 && static_cast<int>(b->getPiece(p1).first) == 0 && static_cast<int>(b->getPiece(p2).first) == 2){
+    if(numMoves==0 && b->isFirstMove(p2) && x == 5 && static_cast<int>(b->getPiece(potentialPos).first) == 0 && static_cast<int>(b->getPiece(p1).first) == 0 && static_cast<int>(b->getPiece(p2).first) == 2){
         bool check =checkCastling(b, p1, potentialPos, p);
         if(check){
             locations.emplace_back(p1);
@@ -65,7 +65,7 @@ vector<Position> King::validMoves(Position p, Board* b){
     potentialPos.first = static_cast<xlocation>(x-1);
     potentialPos.second = y;
 
-    if(isFirstMove && b->isFirstMove(p1) && x == 5 && static_cast<int>(b->getPiece(potentialPos).first) == 0 && 
+    if(numMoves == 0 && b->isFirstMove(p1) && x == 5 && static_cast<int>(b->getPiece(potentialPos).first) == 0 && 
         static_cast<int>(b->getPiece(p3).first) == 0 && static_cast<int>(b->getPiece(p2).first) == 0 && static_cast<int>(b->getPiece(p1).first) == 2){
         bool check = checkCastling(b, p2, potentialPos, p);
         if(check){

@@ -296,7 +296,7 @@ std::vector<PotentialMoves> Board::allPotentialMoves(bool colour){
         }
     }
 
-    // // testing purpose
+    // testing purpose
     // std::cout << "I am in allPotentialMoves" << std::endl;
     // for(const auto& moves: potentialMoves){
     //     std::cout << "Move from Position " << moves.first.first << " " << moves.first.second << " to Positions: " << std::endl;
