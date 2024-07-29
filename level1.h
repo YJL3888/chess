@@ -4,6 +4,8 @@
 #include "computerplayer.h"
 
 class Level1 : public ComputerPlayer {
+  bool isWhite;
+
  public:
   Level1(bool isWhite);
   ~Level1() override;

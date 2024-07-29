@@ -4,10 +4,12 @@
 #include "computerplayer.h"
 
 class Level2 : public ComputerPlayer {
-public:
-    Level2(bool isWhite);
-    ~Level2() override;
-    Move getMove(Board* b) override;
+  bool isWhite;
+
+ public:
+  Level2(bool isWhite);
+  ~Level2() override;
+  Move getMove(Board* b) override;
 };
 
 #endif
