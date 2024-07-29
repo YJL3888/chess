@@ -307,7 +307,6 @@ void Board::reverseMove(Move move, bool update){ // reverse the move and switch 
 }
 
 void Board::nextMove(Move move, bool update){ // this is a helper function
-    //should handle deleting killed cells
     std::shared_ptr<ChessPiece> nextOccupant(nullptr);
     if(update){
         moveHistory.push_back(move);
