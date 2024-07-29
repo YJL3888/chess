@@ -20,7 +20,9 @@ class Player {
   virtual Move getMove(Board*) = 0;  // move is a pair of positions
 
   // need something to support: Player p1->getPlayerType() that returns PlayerType::computer or PlayerType::human
-  PlayerType getPlayerType();
+  virtual PlayerType getPlayerType() const = 0;
+  bool getIsWhite() const { return isWhite; }
+
 };
 
 #endif

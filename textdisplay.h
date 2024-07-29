@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include "observer.h"
+using namespace std;
 
 class TextDisplay : public Observer {
     vector<vector<char>> display;
@@ -12,7 +13,7 @@ class TextDisplay : public Observer {
         void notify(Square&) override; //concrete override implementation of the pure virtual method notify in observer.
         friend ostream& operator<<(ostream&, const TextDisplay&);
         char atPos(int, int);
-        virtual ~TextDisplay(); //dtor
+        ~TextDisplay(); //dtor, will change to virtual when there's gui
 };
 
 #endif

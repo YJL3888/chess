@@ -1,5 +1,7 @@
 #include "player.h"
 
+Player::Player(bool isWhite) : isWhite(isWhite) {}
+
 bool Player::isCheckMate(Board* b, bool isWhite) {
   bool opponent = !isWhite;
   vector<PotentialMoves> opponentPotentialMoves =

@@ -10,12 +10,14 @@
 using namespace std;
 
 Game::Game(): 
-    b{new Board()}, 
-    isWhite{1}, 
-    checkmate{false}, 
-    startGame{false}, 
-    p1{nullptr}, p2{nullptr}, 
-    p1Score{0}, p2Score{0}{}
+    b{new Board()},
+    p1{nullptr},
+    p2{nullptr},
+    isWhite{true},
+    checkmate{false},
+    startGame{false},
+    p1Score{0},
+    p2Score{0} {}
 
 
 void Game::endGame(char status){
@@ -57,7 +59,7 @@ void Game::endGame(char status){
 // NEED TO IMPLEMENT THIS
 // We need this because we put the different levels as inheritance instead in one class
 // We can change this if we want
-void ComputerDifficulty(int difficulty, Player* computerPlayer, bool isWhite){
+void Game::ComputerDifficulty(int difficulty, Player* computerPlayer, bool isWhite){
     switch (difficulty) {
         case 1: computerPlayer = new Level1(isWhite);
         case 2: computerPlayer = new Level2(isWhite);
@@ -90,7 +92,7 @@ void Game::play() {
             if (p1) { delete p1; }
             if (p2) { delete p2; }
 
-            if (p1Type == "human") { p1 = new HumanPlayer{1}; } // 1 means white  
+            if (p1Type == "human") { p1 = new HumanPlayer(true); } //true means white  
             else {
                 if (p1Type.back()-'0' < 1 || p1Type.back()-'0' > 4) { // invalid computer level.
                     cout << "Invalid level for player 1. The computer difficulty needs to be in between 1-4 inclusive, difficulty default set to 1" << endl;
@@ -101,7 +103,7 @@ void Game::play() {
                 ComputerDifficulty(difficulty, p1, true); //true means white
             }
 
-            if (p2Type == "human") { p2 = new HumanPlayer{0}; } // 0 means black
+            if (p2Type == "human") { p2 = new HumanPlayer(false); } // false means black
             else {
                 if (p2Type.back()-'0' < 1 || p2Type.back()-'0' > 4) { // invalid computer level.
                     cout << "Invalid level for player 2. The computer difficulty needs to be in between 1-4 inclusive, difficulty default set to 1" << endl;

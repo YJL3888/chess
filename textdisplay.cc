@@ -44,3 +44,7 @@ ostream& operator<<(ostream& out, const TextDisplay& textDisplay) {
     out << endl << "  abcdefgh" << endl; // prints the bottom row index.
     return out;
 }
+
+TextDisplay::~TextDisplay() {
+    // Implementation of TextDisplay destructor
+}
