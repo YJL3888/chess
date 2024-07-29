@@ -5,7 +5,6 @@
 
 class Level2 : public ComputerPlayer {
   bool isWhite;
-  bool noMoves(vector<PotentialMoves> Moves);
 
  public:
   Level2(bool isWhite);

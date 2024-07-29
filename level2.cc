@@ -6,15 +6,6 @@ Level2::Level2(bool isWhite) : ComputerPlayer(isWhite) {
 
 Level2::~Level2() {}
 
-bool Level2::noMoves(vector<PotentialMoves> Moves) {
-  for (auto m : Moves) {
-    if (!m.second.empty()) {
-      return false;
-    }
-  }
-  return true;
-}
-
 Move Level2::getMove(Board* b) {
   vector<PotentialMoves> moves = b->allPotentialMoves(isWhite);
   vector<PotentialMoves> allMoves;
@@ -77,7 +68,7 @@ Move Level2::getMove(Board* b) {
   }
 
   if (!movesList.empty()) {
-    if (noMoves(movesList)) {
+    if (ComputerPlayer::noMoves(movesList)) {
       Move staleMate =
           std::make_pair(std::make_pair(Y, -1), std::make_pair(Y, -1));
       return staleMate;
@@ -91,7 +82,7 @@ Move Level2::getMove(Board* b) {
     ans.second = movesList.at(random).second.at(movesList.size());
     return ans;
   } else {
-    if (noMoves(allMoves)) {
+    if (ComputerPlayer::noMoves(allMoves)) {
       Move staleMate =
           std::make_pair(std::make_pair(Y, -1), std::make_pair(Y, -1));
       return staleMate;
