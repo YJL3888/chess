@@ -49,10 +49,10 @@ Move Level2::getMove(Board* b) {
   }
 
   if (!movesList.empty()) {
-    return ComputerPlayer::pickRandomMove(
-        movesList);  // if there are moves that checks, randomly pick in those
+    return ComputerPlayer::pickRandomMove(movesList);
+    // if there are moves that checks, randomly pick in those
   } else {
-    return ComputerPlayer::pickRandomMove(
-        allMoves);  // else return a random move
+    return ComputerPlayer::pickRandomMove(allMoves);
+    // else return a random move
   }
 }
