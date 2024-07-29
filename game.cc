@@ -24,7 +24,7 @@ void Game::endGame(char status){
     cout << *b << endl; // print the board
 
     if (status == 'd') {
-        cout << "StaleMate! The game is a draw!" << endl;
+        cout << "Stalemate! The game is a draw!" << endl;
         p1Score += 0.5;
         p2Score += 0.5;
     }
