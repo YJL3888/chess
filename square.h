@@ -12,10 +12,11 @@ class ChessPiece;
 class Board;
 
 class Square {
-    shared_ptr<ChessPiece> chessPiece;  // chess piece with Piece and other info
-    shared_ptr<ChessPiece> tempChessPiece = nullptr; // chess piece used in the check()
     Position position;                  // xy coordinate in form: pair<xlocation, int>
+    shared_ptr<ChessPiece> chessPiece;  // chess piece with Piece and other info
     vector<shared_ptr<Observer>> observers;        // list of observers attached
+
+    shared_ptr<ChessPiece> tempChessPiece = nullptr; // chess piece used in the check()
     Square(Position position, shared_ptr<ChessPiece>);
     void notifyObservers();
     void attach(shared_ptr<Observer>);

@@ -8,4 +8,5 @@ Level2::~Level2() {}
 
 Move Level2::getMove(Board* b) {
     // Implementation of Level2's getMove method
+    return Move{}; // Add a return statement with an appropriate return value
 }

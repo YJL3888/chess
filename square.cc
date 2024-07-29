@@ -3,11 +3,11 @@ using namespace std;
 
 // private ctor
 Square::Square(Position position, shared_ptr<ChessPiece> chessPiece): 
-    observers{}, chessPiece{chessPiece}, position(position) {}
+    position(position), chessPiece{chessPiece}, observers() {}
 
 // overloaded public ctor with observer
 Square::Square(Position position, shared_ptr<ChessPiece> chessPiece, shared_ptr<Observer> observer): 
-    observers{}, chessPiece{chessPiece}, position(position) {
+    position(position), chessPiece(chessPiece), observers() {
     attach(observer);
     notifyObservers();
 }
