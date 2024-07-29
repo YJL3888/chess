@@ -2,6 +2,15 @@
 
 Level1::Level1(bool isWhite) : ComputerPlayer(isWhite) {};
 
+bool noMoves(vector<PotentialMoves> Moves) {
+  for (auto m : Moves) {
+    if (!m.second.empty()) {
+      return false;
+    }
+  }
+  return true;
+}
+
 std::pair<Position, Position> Level1::getMove(Board* b) {
   vector<PotentialMoves> moves = b->allPotentialMoves(isWhite);
   vector<PotentialMoves> allMoves;
@@ -44,11 +53,4 @@ std::pair<Position, Position> Level1::getMove(Board* b) {
   return Move(ans.first, ans.second);
 };
 
-bool noMoves(vector<PotentialMoves> Moves) {
-  for (auto m : Moves) {
-    if (!m.second.empty()) {
-      return false;
-    }
-  }
-  return true;
-}
+Level1::~Level1() {}
