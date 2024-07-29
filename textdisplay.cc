@@ -41,7 +41,7 @@ ostream& operator<<(ostream& out, const TextDisplay& textDisplay) {
         }
         out << endl; // new line after each row.
     }
-    out << endl << "  abcdefgh" << endl; // prints the bottom row index.
+    out << endl << "  abcdefgh\n\n" << endl; // prints the bottom row index.
     return out;
 }
 
