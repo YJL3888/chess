@@ -19,7 +19,7 @@ vector<Position> King::validMoves(Position p, Board* b){
     vector<Position> locations;
     int x = static_cast<int>(p.first);
     int y = p.second;
-    bool colour = b->getPiece(p).second;
+    // bool colour = b->getPiece(p).second;
 
     Position potentialPos;
 
