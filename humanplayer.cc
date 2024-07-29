@@ -98,11 +98,11 @@ Move HumanPlayer::getMove(Board* b) {
   }
   // check for endgame
   if (!std::cin.eof()) {
-    if (b->inCheck(this->isWhite)) {
+    if (b->inCheck(!(this->isWhite))) {
       if (isWhite) {
-        std::cout << "White player is in check\n";
-      } else {
         std::cout << "Black player is in check\n";
+      } else {
+        std::cout << "White player is in check\n";
       }
       if (isCheckMate(b, this->isWhite)) {
         if (isStaleMate(b, this->isWhite)) {
