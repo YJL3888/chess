@@ -2,15 +2,6 @@
 
 Level1::Level1(bool isWhite) : ComputerPlayer(isWhite) {};
 
-bool Level1::noMoves(vector<PotentialMoves> Moves) {
-  for (auto m : Moves) {
-    if (!m.second.empty()) {
-      return false;
-    }
-  }
-  return true;
-}
-
 std::pair<Position, Position> Level1::getMove(Board* b) {
   vector<PotentialMoves> moves = b->allPotentialMoves(isWhite);
   vector<PotentialMoves> allMoves;
@@ -36,7 +27,7 @@ std::pair<Position, Position> Level1::getMove(Board* b) {
 
   Move ans;
 
-  if (noMoves(allMoves)) {
+  if (ComputerPlayer::noMoves(allMoves)) {
     Move staleMate =
         std::make_pair(std::make_pair(Y, -1), std::make_pair(Y, -1));
     return staleMate;

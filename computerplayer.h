@@ -10,8 +10,9 @@ class ComputerPlayer : public Player {
  public:
   ComputerPlayer(bool isWhite);
   virtual ~ComputerPlayer() override;
-  virtual Move getMove(Board* b) override = 0; // Pure virtual function
+  virtual Move getMove(Board* b) override = 0;  // Pure virtual function
   PlayerType getPlayerType() const override { return PlayerType::computer; }
+  bool noMoves(vector<PotentialMoves> Moves);
 };
 
 #endif
