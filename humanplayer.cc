@@ -28,6 +28,7 @@ bool HumanPlayer::isValidMove(Board* b, Move move) const {
       for (const auto& end : moves.second) {
         if (end == move.second) {
           return true;
+          std::cout << "true!" << std::endl;
         }
       }
     }

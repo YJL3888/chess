@@ -1,0 +1,6 @@
+game human human
+move e2 e4
+move d7 d5
+move e4 e5
+move d8 d6
+move e5 d6

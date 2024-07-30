@@ -1,34 +1,36 @@
 #include "types.h"
 
-xlocation chartoXlocation(char c) {
-  xlocation x;
-  switch (c) {
-    case '1':
-      x = A;
-      break;
-    case '2':
-      x = B;
-      break;
-    case '3':
-      x = C;
-      break;
-    case '4':
-      x = D;
-      break;
-    case '5':
-      x = E;
-      break;
-    case '6':
-      x = F;
-      break;
-    case '7':
-      x = G;
-      break;
-    case '8':
-      x = H;
-      break;
-  }
-  return x;
+#include "types.h"
+
+xlocation chartoXlocation(char c){
+    xlocation x;
+    switch(c){
+        case 'A':
+            x = A;
+            break;
+        case 'B':
+            x = B;
+            break;
+        case 'C':
+            x = C;
+            break;
+        case 'D':
+            x = D;
+            break;
+        case 'E':
+            x = E;
+            break;
+        case 'F':
+            x = F;
+            break;
+        case 'G':
+            x = G;
+            break;
+        case 'H':
+            x = H;
+            break;
+    }
+    return x;
 }
 
 char XlocationToChar(xlocation xl) {

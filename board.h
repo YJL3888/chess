@@ -16,6 +16,7 @@ class Board {
   // TextDisplay* textDisplay;
   // GUI* gui;
   vector<std::pair<Move, Piece>> moveHistory;
+  // vector<Move> moveHistory;
   vector<Move> redoHistory;
   void enPassant(Move);
   void castling(Move);
