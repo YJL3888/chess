@@ -1,6 +1,8 @@
 #ifndef COMPUTERPLAYER_H
 #define COMPUTERPLAYER_H
 
+#include <algorithm>
+
 #include "player.h"
 #include "types.h"
 
