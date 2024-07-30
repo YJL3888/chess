@@ -11,27 +11,9 @@ Move Level2::chooseMove(Board* b, vector<PotentialMoves> validMoves) {
   // vector<PotentialMoves> allMoves =
   //     ComputerPlayer::getValidMoves(moves, b, isWhite);
 
-  // checkmate A, -1
-  Move ans = std::make_pair(std::make_pair(Z, -2), std::make_pair(Z, -2));
-
-  // prioritize move that checks
-  for (auto m : validMoves) {
-    Position first = m.first;
-    vector<Position> second = m.second;
-    for (auto s : second) {
-      Move makeMove = std::make_pair(first, s);
-      Move undoMove = std::make_pair(s, first);
-      b->testMove(makeMove, false);
-      if (b->inCheck(!isWhite)) {
-        // if this moves checks opponent,
-        // play this move
-        b->reverseMove(undoMove, false);
-        ans.first = first;
-        ans.second = s;
-        return ans;
-      }
-      b->reverseMove(undoMove, false);
-    }
+  Move check = ComputerPlayer::checkingMoves(b, isWhite);
+  if (check.first.second != -2) {
+    return check;
   }
 
   vector<PotentialMoves> movesList;

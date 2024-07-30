@@ -8,6 +8,9 @@ class Level3 : public ComputerPlayer {
   Level3(bool isWhite);
   ~Level3();
   Move chooseMove(Board* b, vector<PotentialMoves> validMoves) override;
+  vector<PotentialMoves> lv2list(Board* b,
+                                 std::vector<PotentialMoves> validMoves);
+  Move lv2Move(Board* b, std::vector<PotentialMoves> validMoves);
 };
 
 #endif

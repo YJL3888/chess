@@ -4,6 +4,28 @@ ComputerPlayer::ComputerPlayer(bool isWhite) : Player(isWhite) {}
 
 ComputerPlayer::~ComputerPlayer() {}
 
+Move ComputerPlayer::checkingMoves(Board* b, bool isWhite) {
+  Move check = std::make_pair(std::make_pair(Z, -2), std::make_pair(Z, -2));
+  vector<PotentialMoves> allMoves = b->allPotentialMoves(isWhite);
+  for (auto move : allMoves) {
+    Position first = move.first;
+    vector<Position> second = move.second;
+    for (auto s : second) {
+      Move makeMove = std::make_pair(first, s);
+      Move undoMove = std::make_pair(s, first);
+      b->testMove(makeMove, false);
+      if (b->inCheck(!isWhite)) {
+        b->reverseMove(undoMove, false);
+        check.first = first;
+        check.second = s;
+        return check;
+      }
+      b->reverseMove(undoMove, false);
+    }
+  }
+  return check;
+}
+
 bool ComputerPlayer::noMoves(vector<PotentialMoves> Moves) {
   for (auto m : Moves) {
     if (!m.second.empty()) {
@@ -91,7 +113,7 @@ Move ComputerPlayer::getMove(Board* b) {
 
   if ((move.second.second == 8 || move.second.second == 1) &&
       b->getPiece(move.second).first == PieceType::Pawn) {
-    // if piece has reached either end and it's a pawn, promotion
+    // if piece has reached either end and it's a pawn, promotion to Queen
     b->promote(move.second, 'Q');
   }
 
