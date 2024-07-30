@@ -19,24 +19,7 @@ using namespace std;
 Board constructor - sets up the board with squares and textdisplay.
 TODO - Not tested yet.
 */
-// Board::Board(): squares{}, textDisplay {make_shared<TextDisplay>()}, gui{new GUI} { // later add: gui{new GUI()}
-//     for (int i = 1; i <= 8; ++i) {
-//         squares.push_back({
-//             Square(Position(A,i), nullptr, textDisplay),
-//             Square(Position(B,i), nullptr, textDisplay),
-//             Square(Position(C,i), nullptr, textDisplay),
-//             Square(Position(D,i), nullptr, textDisplay),
-//             Square(Position(E,i), nullptr, textDisplay),
-//             Square(Position(F,i), nullptr, textDisplay),
-//             Square(Position(G,i), nullptr, textDisplay),
-//             Square(Position(H,i), nullptr, textDisplay),
-//         });
-//     }
-//     // add this for GUI: gui->update(textDisplay);
-// }
-
-// below is for no gui for faster debugging
-Board::Board(): squares{}, textDisplay {make_shared<TextDisplay>()}{ // later add: gui{new GUI()}
+Board::Board(): squares{}, textDisplay {make_shared<TextDisplay>()}, gui{new GUI} { // later add: gui{new GUI()}
     for (int i = 1; i <= 8; ++i) {
         squares.push_back({
             Square(Position(A,i), nullptr, textDisplay),
@@ -51,12 +34,29 @@ Board::Board(): squares{}, textDisplay {make_shared<TextDisplay>()}{ // later ad
     }
     // add this for GUI: gui->update(textDisplay);
 }
-ostream& operator<<(std::ostream& out, const Board& b){
-    // out << *(b.textDisplay);
-    // return out;
-    // b.gui->update(b.textDisplay);
-    return out << *b.textDisplay;
-}
+
+// below is for no gui for faster debugging
+// Board::Board(): squares{}, textDisplay {make_shared<TextDisplay>()}{ // later add: gui{new GUI()}
+//     for (int i = 1; i <= 8; ++i) {
+//         squares.push_back({
+//             Square(Position(A,i), nullptr, textDisplay),
+//             Square(Position(B,i), nullptr, textDisplay),
+//             Square(Position(C,i), nullptr, textDisplay),
+//             Square(Position(D,i), nullptr, textDisplay),
+//             Square(Position(E,i), nullptr, textDisplay),
+//             Square(Position(F,i), nullptr, textDisplay),
+//             Square(Position(G,i), nullptr, textDisplay),
+//             Square(Position(H,i), nullptr, textDisplay),
+//         });
+//     }
+//     // add this for GUI: gui->update(textDisplay);
+// }
+// ostream& operator<<(std::ostream& out, const Board& b){
+//     // out << *(b.textDisplay);
+//     // return out;
+//     // b.gui->update(b.textDisplay);
+//     return out << *b.textDisplay;
+// }
 
 Board::~Board(){
     // if using smart pointer delete this
@@ -70,12 +70,12 @@ Outputs the board.
 TODO - will need the textDisplay set up.
 TODO - Not tested yet.
 */
-// ostream& operator<<(std::ostream& out, const Board& b){
-//     // out << *(b.textDisplay);
-//     // return out;
-//     b.gui->update(b.textDisplay);
-//     return out << *b.textDisplay;
-// }
+ostream& operator<<(std::ostream& out, const Board& b){
+    // out << *(b.textDisplay);
+    // return out;
+    b.gui->update(b.textDisplay);
+    return out << *b.textDisplay;
+}
 
 /*
 TODO - not tested yet

@@ -5,7 +5,7 @@ OBJECTS = bishop.o board.o chesspiece.o computerplayer.o game.o gui.o humanplaye
 DEPENDS = ${OBJECTS:.o=.d}
 
 ${EXEC}: ${OBJECTS}
-	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC} -lSDL2 -lSDL2_ttf -lX11
+	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC} -lX11 -lXpm -lSDL2 -lSDL2_image
 -include ${DEPENDS}
 
 .PHONY: clean
