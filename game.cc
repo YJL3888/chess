@@ -59,7 +59,7 @@ void Game::endGame(char status){
 // NEED TO IMPLEMENT THIS
 // We need this because we put the different levels as inheritance instead in one class
 // We can change this if we want
-void Game::ComputerDifficulty(int difficulty, Player* computerPlayer, bool isWhite){
+void Game::ComputerDifficulty(int difficulty, Player*& computerPlayer, bool isWhite){
     switch (difficulty) {
         case 1: computerPlayer = new Level1(isWhite);
         case 2: computerPlayer = new Level2(isWhite);

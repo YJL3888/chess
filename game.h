@@ -24,7 +24,7 @@ class Game {
     void play();
     void undo();
     void redo();
-    void ComputerDifficulty(int difficulty, Player* computerPlayer, bool isWhite);
+    void ComputerDifficulty(int difficulty, Player*& computerPlayer, bool isWhite);
 
 };
 

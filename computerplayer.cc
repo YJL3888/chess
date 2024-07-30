@@ -28,7 +28,7 @@ Move ComputerPlayer::pickRandomMove(vector<PotentialMoves> Moves) {
   }
 
   randomMove.first = Moves.at(random).first;
-  randomMove.second = Moves.at(random).second.at(Moves.size());
+  randomMove.second = Moves.at(random).second.at(rand() % Moves.at(random).second.size());
   return Move(randomMove.first, randomMove.second);
 }
 
