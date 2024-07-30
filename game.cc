@@ -109,8 +109,10 @@ void Game::play() {
     }
   }
 
+  std::cout << std::endl;
   std::cout << "Options for bonus marks: " << std::endl;
   std::cout << "There is no options XD Bonus Marks +1000 " << std::endl;
+  std::cout << std::endl;
 
   // // option to output images or the chess strings
   // std::cout << "Would you like to output the chess piece image? (yes/no)" << std::endl;
