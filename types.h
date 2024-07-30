@@ -28,11 +28,9 @@ enum xlocation {
 };
 
 xlocation chartoXlocation(char c);
+char XlocationToChar(xlocation);
 
-enum class PlayerType {
-    human,
-    computer
-};
+enum class PlayerType { human, computer };
 
 typedef pair<PieceType, bool> Piece;  // the type of the piece + the colour of
                                       // the piece (0 black, 1 white)
