@@ -1,6 +1,8 @@
 #ifndef COMPUTERPLAYER_H
 #define COMPUTERPLAYER_H
 
+#include <algorithm>
+
 #include "player.h"
 #include "types.h"
 
@@ -10,7 +12,8 @@ class ComputerPlayer : public Player {
  public:
   ComputerPlayer(bool isWhite);
   virtual ~ComputerPlayer() override;
-  virtual Move getMove(Board* b) override = 0;  // Pure virtual function
+  Move getMove(Board* b) override;
+  virtual Move chooseMove(Board* b, vector<PotentialMoves> validMoves) = 0;
   PlayerType getPlayerType() const override { return PlayerType::computer; }
   bool noMoves(std::vector<PotentialMoves> Moves);
   Move pickRandomMove(std::vector<PotentialMoves> Moves);
