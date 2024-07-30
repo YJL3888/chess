@@ -91,7 +91,7 @@ void Game::play() {
 
   // option for graphical display
   std::cout << "Options for graphical display (Enter[0-2]): " << std::endl;
-  std::cout << "0. No graphical display" << std::endl;
+  std::cout << "0. No graphical display updates" << std::endl;
   std::cout << "1. Graphical display with strings/letters" << std::endl;
   std::cout << "2. Graphical display with images" << std::endl;
   while(cin >> outputImage){
@@ -109,6 +109,9 @@ void Game::play() {
     }
   }
 
+  std::cout << "Options for bonus marks: " << std::endl;
+  std::cout << "There is no options XD Bonus Marks +1000 " << std::endl;
+
   // // option to output images or the chess strings
   // std::cout << "Would you like to output the chess piece image? (yes/no)" << std::endl;
   // while(cin >> outputImage){
@@ -124,7 +127,7 @@ void Game::play() {
   // cout<< "You can enter your commands now :)" << endl;
   
   cout<< "You can enter your commands now :)" << endl;
-  
+
   while (cin >> command) {
     // CASE WHEN NO ACTIVE GAME
     if (startGame == false && command == "game") {  // game white-player black-player
