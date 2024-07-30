@@ -86,24 +86,45 @@ void Game::play() {
   string command, p1Type, p2Type;
   int difficulty;
   int setUpMode = 0;
-  string outputImage = "no";
-  bool printImage = 0;
+  string outputImage = "0";
+  int printImage = 0;
 
-  // option to output images or the chess strings
-  std::cout << "Would you like to output the chess piece image? (yes/no)" << std::endl;
+  // option for graphical display
+  std::cout << "Options for graphical display (Enter[0-2]): " << std::endl;
+  std::cout << "0. No graphical display" << std::endl;
+  std::cout << "1. Graphical display with strings/letters" << std::endl;
+  std::cout << "2. Graphical display with images" << std::endl;
   while(cin >> outputImage){
-    if(outputImage != "yes" && outputImage != "no"){
-      std::cout << "Invalid input! You should enter yes or no :/" << std::endl;
+    if(outputImage != "0" && outputImage != "1" && outputImage != "2"){
+      std::cout << "Invalid input! You should enter 0, 1, or 2 :/" << std::endl;
     }else{
-      if(outputImage == "yes"){
+      if(outputImage == "0"){
+        printImage = 0;
+      }else if(outputImage == "1"){
         printImage = 1;
+      }else{
+        printImage = 2;
       }
       break;
     }
   }
+
+  // // option to output images or the chess strings
+  // std::cout << "Would you like to output the chess piece image? (yes/no)" << std::endl;
+  // while(cin >> outputImage){
+  //   if(outputImage != "yes" && outputImage != "no"){
+  //     std::cout << "Invalid input! You should enter yes or no :/" << std::endl;
+  //   }else{
+  //     if(outputImage == "yes"){
+  //       printImage = 1;
+  //     }
+  //     break;
+  //   }
+  // }
+  // cout<< "You can enter your commands now :)" << endl;
+  
   cout<< "You can enter your commands now :)" << endl;
   
-
   while (cin >> command) {
     // CASE WHEN NO ACTIVE GAME
     if (startGame == false && command == "game") {  // game white-player black-player

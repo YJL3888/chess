@@ -22,7 +22,7 @@ class Board {
   Board();
   virtual ~Board();
 
-  bool commandIntepreter(istream&, bool, bool=false);
+  bool commandIntepreter(istream&, bool, int);
   Piece getPiece(Position);
   bool isFirstMove(Position);
   Move previousMove();  // need this for en passant to verfiy the previous move

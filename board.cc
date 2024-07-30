@@ -75,7 +75,9 @@ TODO - Not tested yet.
 ostream& operator<<(std::ostream& out, const Board& b){
     // out << *(b.textDisplay);
     // return out;
-    b.gui->update(b.textDisplay, b.drawImage);
+    if(b.drawImage != 0){
+      b.gui->update(b.textDisplay, b.drawImage);
+    }
     return out << *b.textDisplay;
 }
 
@@ -89,12 +91,12 @@ This method read input from istream, process them to set up board,
 including adding piece ("+ K e1"), removing piece ("- e1"), and setup done
 ("done") to check validity.
 */
-bool Board::commandIntepreter(istream& in, bool printBoard, bool displayImage) {
+bool Board::commandIntepreter(istream& in, bool printBoard, int displayOptions) {
   string arg1, arg2, arg3;
   bool white = true;
   bool valid = false;
 
-  drawImage = displayImage;
+  drawImage = displayOptions;
 
   do {
     in >> arg1;

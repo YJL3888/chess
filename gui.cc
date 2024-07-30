@@ -69,7 +69,7 @@ std::string GUI::getUnicodePiece(char piece) {
 
 
 // Drawing the string
-void GUI::update(std::shared_ptr<TextDisplay> textDisplay, bool drawImage) {
+void GUI::update(std::shared_ptr<TextDisplay> textDisplay, int drawImage) {
     // Clear the window by filling it with white color
     window.fillRectangle(0, 0, 400, 400, Xwindow::White);
 
@@ -80,12 +80,12 @@ void GUI::update(std::shared_ptr<TextDisplay> textDisplay, bool drawImage) {
             int y = i * 50;
             char piece = textDisplay->atPos(i, j);
 
-            if(drawImage){
+            if(drawImage == 2){
                 // Draw the square
                 if ((i + j) % 2 == 0) {
                     window.fillRectangle(x, y, 50, 50, Xwindow::White); // White square
                 } else {
-                    window.fillRectangle(x, y, 50, 50, Xwindow::Green); // Black square
+                    window.fillRectangle(x, y, 50, 50, Xwindow::Green); // Green square
                 }
 
                 // Draw the piece
