@@ -85,7 +85,7 @@ void Game::play() {
                 defaultSetUp << "+ P a2 + P b2 + P c2 + P d2 + P e2 + P f2 + P g2 + P h2 ";
                 defaultSetUp << "+ R a1 + N b1 + B c1 + Q d1 + K e1 + B f1 + N g1 + R h1 ";
                 defaultSetUp << "done ";
-                b->commandIntepreter(defaultSetUp, 1);
+                b->commandIntepreter(defaultSetUp, 0);
             }
             cin >> p1Type >> p2Type;
             // check if p1 and p2 contain existing players, delete if not null => give space to create new players.
