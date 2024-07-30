@@ -7,7 +7,8 @@ ComputerPlayer::~ComputerPlayer() {}
 Move ComputerPlayer::checkingMoves(Board* b, bool isWhite) {
   Move check = std::make_pair(std::make_pair(Z, -2), std::make_pair(Z, -2));
   vector<PotentialMoves> allMoves = b->allPotentialMoves(isWhite);
-  for (auto move : allMoves) {
+  vector<PotentialMoves> legalMoves = getValidMoves(allMoves, b, isWhite);
+  for (auto move : legalMoves) {
     Position first = move.first;
     vector<Position> second = move.second;
     for (auto s : second) {
