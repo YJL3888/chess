@@ -8,7 +8,7 @@ class Level1 : public ComputerPlayer {
 
  public:
   Level1(bool isWhite);
-  Move getMove(Board* b) override;
+  Move chooseMove(Board* b, vector<PotentialMoves> validMoves) override;
   ~Level1() override;
 };
 

@@ -28,7 +28,8 @@ Move ComputerPlayer::pickRandomMove(vector<PotentialMoves> Moves) {
   }
 
   randomMove.first = Moves.at(random).first;
-  randomMove.second = Moves.at(random).second.at(rand() % Moves.at(random).second.size());
+  randomMove.second =
+      Moves.at(random).second.at(rand() % Moves.at(random).second.size());
   return Move(randomMove.first, randomMove.second);
 }
 
@@ -55,4 +56,44 @@ std::vector<PotentialMoves> ComputerPlayer::getValidMoves(
     }
   }
   return validMoves;
+}
+
+Move ComputerPlayer::getMove(Board* b) {
+  vector<PotentialMoves> allMoves = b->allPotentialMoves(isWhite);
+  // get all theoretical possible moves
+  vector<PotentialMoves> validMoves =
+      ComputerPlayer::getValidMoves(allMoves, b, isWhite);
+  // get all moves that are valid
+
+  // get next move depending on level, function is overriden by each level.
+  Move move = chooseMove(b, validMoves);
+
+  if (move.second.second == -1) {
+    // stalemate
+    return std::make_pair(std::make_pair(Y, -1), std::make_pair(Y, -1));
+  }
+
+  b->nextMove(move, true);
+
+  if (b->inCheck(!isWhite)) {
+    std::cout << (isWhite ? "White" : "Black") << " is in check" << endl;
+  }
+
+  if (isCheckMate(b, isWhite)) {
+    if (isStaleMate(b, isWhite)) {
+      // stalemate
+      return std::make_pair(std::make_pair(Y, -1), std::make_pair(Y, -1));
+    }
+
+    // checkmate
+    return std::make_pair(std::make_pair(Z, -2), std::make_pair(Z, -2));
+  }
+
+  if ((move.second.second == 8 || move.second.second == 1) &&
+      b->getPiece(move.second).first == PieceType::Pawn) {
+    // if piece has reached either end and it's a pawn, promotion
+    b->promote(move.second, 'Q');
+  }
+
+  return move;
 }

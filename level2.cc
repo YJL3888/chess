@@ -6,15 +6,16 @@ Level2::Level2(bool isWhite) : ComputerPlayer(isWhite) {
 
 Level2::~Level2() {}
 
-Move Level2::getMove(Board* b) {
-  vector<PotentialMoves> moves = b->allPotentialMoves(isWhite);
-  vector<PotentialMoves> allMoves =
-      ComputerPlayer::getValidMoves(moves, b, isWhite);
+Move Level2::chooseMove(Board* b, vector<PotentialMoves> validMoves) {
+  // vector<PotentialMoves> moves = b->allPotentialMoves(isWhite);
+  // vector<PotentialMoves> allMoves =
+  //     ComputerPlayer::getValidMoves(moves, b, isWhite);
 
+  // checkmate A, -1
   Move ans = std::make_pair(std::make_pair(Z, -2), std::make_pair(Z, -2));
 
   // prioritize move that checks
-  for (auto m : moves) {
+  for (auto m : validMoves) {
     Position first = m.first;
     vector<Position> second = m.second;
     for (auto s : second) {
@@ -22,6 +23,8 @@ Move Level2::getMove(Board* b) {
       Move undoMove = std::make_pair(s, first);
       b->testMove(makeMove, false);
       if (b->inCheck(!isWhite)) {
+        // if this moves checks opponent,
+        // play this move
         b->reverseMove(undoMove, false);
         ans.first = first;
         ans.second = s;
@@ -33,13 +36,14 @@ Move Level2::getMove(Board* b) {
 
   vector<PotentialMoves> movesList;
 
-  for (auto move : allMoves) {
+  for (auto move : validMoves) {
     PotentialMoves aMove;
     aMove.first = move.first;
     aMove.second = {};
     for (auto s : move.second) {
       if (b->getPiece(s).first != PieceType::Empty &&
           b->getPiece(s).second != isWhite) {
+        // if this moves captures
         aMove.second.emplace_back(s);
       }
     }
@@ -49,10 +53,10 @@ Move Level2::getMove(Board* b) {
   }
 
   if (!movesList.empty()) {
+    // if there are ways to capture, choose a random capturing move
     return ComputerPlayer::pickRandomMove(movesList);
-    // if there are moves that checks, randomly pick in those
   } else {
-    return ComputerPlayer::pickRandomMove(allMoves);
     // else return a random move
+    return ComputerPlayer::pickRandomMove(validMoves);
   }
 }

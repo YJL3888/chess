@@ -17,12 +17,12 @@ class Player {
   virtual ~Player() {};
   bool isCheckMate(Board*, bool);
   bool isStaleMate(Board*, bool);
-  virtual Move getMove(Board*) = 0;  // move is a pair of positions
+  virtual Move getMove(Board* b) = 0;  // move is a pair of positions
 
-  // need something to support: Player p1->getPlayerType() that returns PlayerType::computer or PlayerType::human
+  // need something to support: Player p1->getPlayerType() that returns
+  // PlayerType::computer or PlayerType::human
   virtual PlayerType getPlayerType() const = 0;
   bool getIsWhite() const { return isWhite; }
-
 };
 
 #endif

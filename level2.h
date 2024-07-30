@@ -9,7 +9,7 @@ class Level2 : public ComputerPlayer {
  public:
   Level2(bool isWhite);
   ~Level2() override;
-  Move getMove(Board* b) override;
+  Move chooseMove(Board* b, vector<PotentialMoves> validMoves) override;
 };
 
 #endif
