@@ -60,21 +60,26 @@ void Game::endGame(char status) {
 // NEED TO IMPLEMENT THIS
 // We need this because we put the different levels as inheritance instead in
 // one class We can change this if we want
-void Game::ComputerDifficulty(int difficulty, Player*& computerPlayer,
-                              bool isWhite) {
+Player* Game::ComputerDifficulty(int difficulty, bool isWhite) {
+  Player* computerPlayer;
   switch (difficulty) {
     case 1:
       computerPlayer = new Level1(isWhite);
+      break;
     case 2:
       computerPlayer = new Level2(isWhite);
+      break;
     case 3:
       computerPlayer = new Level3(isWhite);
+      break;
     case 4:
       computerPlayer = new Level4(isWhite);
+      break;
     default:
       computerPlayer = new Level1(isWhite);
+      break;
   }
-  // unfinished
+  return computerPlayer;
 }
 
 void Game::play() {
@@ -107,6 +112,8 @@ void Game::play() {
       if (p2) {
         delete p2;
       }
+      // delete p1;
+      // delete p2;
 
       if (p1Type == "human") {
         p1 = new HumanPlayer(true);
@@ -121,7 +128,8 @@ void Game::play() {
         } else {  // valid computer level.
           difficulty = p1Type.back() - '0';
         }
-        ComputerDifficulty(difficulty, p1, true);  // true means white
+        // ComputerDifficulty(difficulty, p1, true);  // true means white
+        p1 = ComputerDifficulty(difficulty, true);
       }
 
       if (p2Type == "human") {
@@ -137,7 +145,8 @@ void Game::play() {
         } else {  // valid computer level.
           difficulty = p2Type.back() - '0';
         }
-        ComputerDifficulty(difficulty, p2, false);  // false means black
+        // ComputerDifficulty(difficulty, p2, false);  // false means black
+        p2 = ComputerDifficulty(difficulty, false);
       }
 
       // STARTING GAME!

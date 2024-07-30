@@ -17,15 +17,15 @@ class Game {
     bool startGame;
     float p1Score, p2Score;
     void endGame(char);
+    Player* ComputerDifficulty(int difficulty, bool isWhite);
 
   public:
     Game();
-    ~Game();
+    virtual ~Game();
     void play();
     void undo();
     void redo();
-    void ComputerDifficulty(int difficulty, Player*& computerPlayer, bool isWhite);
-
+    // void ComputerDifficulty(int difficulty, Player*& computerPlayer, bool isWhite);
 };
 
 #endif

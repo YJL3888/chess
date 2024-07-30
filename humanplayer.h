@@ -9,7 +9,7 @@ class HumanPlayer: public Player{
 
  public:
   HumanPlayer(bool isWhite);
-  ~HumanPlayer() override;
+  virtual ~HumanPlayer();
   Move getMove(Board*) override;
   bool isValidMove(Board*, Move) const;
   PlayerType getPlayerType() const override { return PlayerType::human; }

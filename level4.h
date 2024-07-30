@@ -6,7 +6,7 @@
 class Level4 : public ComputerPlayer {
  public:
   Level4(bool isWhite);
-  ~Level4() override;
+  ~Level4();
   Move chooseMove(Board* b, std::vector<PotentialMoves> validMoves) override;
   vector<PotentialMoves> lv3list(Board* b,
                                  std::vector<PotentialMoves> validMoves);

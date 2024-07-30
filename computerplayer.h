@@ -11,7 +11,7 @@ class ComputerPlayer : public Player {
 
  public:
   ComputerPlayer(bool isWhite);
-  virtual ~ComputerPlayer() override;
+  virtual ~ComputerPlayer();
   Move getMove(Board* b) override;
   virtual Move chooseMove(Board* b, vector<PotentialMoves> validMoves) = 0;
   PlayerType getPlayerType() const override { return PlayerType::computer; }

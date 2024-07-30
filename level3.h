@@ -6,7 +6,7 @@
 class Level3 : public ComputerPlayer {
  public:
   Level3(bool isWhite);
-  ~Level3() override;
+  ~Level3();
   Move chooseMove(Board* b, vector<PotentialMoves> validMoves) override;
 };
 

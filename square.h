@@ -32,7 +32,7 @@ public:
     void check(); // try a move using a test chessPiece
     void undoCheck(); // swap back to the actual chessPiece
     std::vector<Position> getPossibleMoves(Board*); // return all the available moves for a given chessPiece
-    ~Square();
+    virtual ~Square();
 };
 
 #endif

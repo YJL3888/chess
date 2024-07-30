@@ -23,7 +23,7 @@ class Board {
 
  public:
   Board();
-  ~Board();
+  virtual ~Board();
 
   bool commandIntepreter(istream&, bool);
   Piece getPiece(Position);

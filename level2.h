@@ -4,11 +4,11 @@
 #include "computerplayer.h"
 
 class Level2 : public ComputerPlayer {
-  bool isWhite;
+  // bool isWhite;
 
  public:
   Level2(bool isWhite);
-  ~Level2() override;
+  ~Level2();
   Move chooseMove(Board* b, vector<PotentialMoves> validMoves) override;
 };
 
