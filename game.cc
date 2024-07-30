@@ -86,10 +86,27 @@ void Game::play() {
   string command, p1Type, p2Type;
   int difficulty;
   int setUpMode = 0;
+  string outputImage = "no";
+  bool printImage = 0;
+
+  // option to output images or the chess strings
+  std::cout << "Would you like to output the chess piece image? (yes/no)" << std::endl;
+  while(cin >> outputImage){
+    if(outputImage != "yes" && outputImage != "no"){
+      std::cout << "Invalid input! You should enter yes or no :/" << std::endl;
+    }else{
+      if(outputImage == "yes"){
+        printImage = 1;
+      }
+      break;
+    }
+  }
+  cout<< "You can enter your commands now :)" << endl;
+  
+
   while (cin >> command) {
     // CASE WHEN NO ACTIVE GAME
-    if (startGame == false &&
-        command == "game") {  // game white-player black-player
+    if (startGame == false && command == "game") {  // game white-player black-player
       if (setUpMode == 0) {
         stringstream defaultSetUp;
         defaultSetUp
@@ -101,7 +118,7 @@ void Game::play() {
         defaultSetUp
             << "+ R a1 + N b1 + B c1 + Q d1 + K e1 + B f1 + N g1 + R h1 ";
         defaultSetUp << "done ";
-        b->commandIntepreter(defaultSetUp, 0);
+        b->commandIntepreter(defaultSetUp, 0, printImage);
       }
       cin >> p1Type >> p2Type;
       // check if p1 and p2 contain existing players, delete if not null => give
@@ -241,7 +258,21 @@ void Game::play() {
     else if (command == "move") {
       cout << "Invalid command. Game is not initalized yet!" << endl;
     } else if (command == "setup") {
-      isWhite = b->commandIntepreter(cin, 0);
+      cout << "Would you like to display the setup everytime you modify the board? (yes/no)" << endl;
+      string displaySetup = "no";
+      bool printSetup = 0;
+      while(cin >> displaySetup){
+        if(displaySetup != "yes" && displaySetup != "no"){
+          std::cout << "Invalid input! You should enter yes or no :/" << std::endl;
+        }else{
+          if(displaySetup == "yes"){
+            printSetup = 1;
+          }
+          break;
+        }
+      }
+      cout << "You can add your setup now :)" << std::endl;
+      isWhite = b->commandIntepreter(cin, printSetup, printImage);
       setUpMode = 1;
     }
   }

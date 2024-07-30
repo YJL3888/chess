@@ -1,5 +1,6 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#include <X11/xpm.h>
 #include <iostream>
 #include <cstdlib>
 #include <string>
@@ -103,3 +104,15 @@ void Xwindow::drawString(int x, int y, string msg, int colour) {
     XFlush(d);
 }
 
+void Xwindow::drawImage(int x, int y, const std::string &filename) {
+    Pixmap pixmap;
+    XpmAttributes attributes;
+    attributes.valuemask = XpmSize;
+    int result = XpmReadFileToPixmap(d, w, const_cast<char *>(filename.c_str()), &pixmap, nullptr, &attributes);
+    if (result != XpmSuccess) {
+        std::cerr << "Error loading image: " << filename << std::endl;
+        return;
+    }
+    XCopyArea(d, pixmap, w, gc, 0, 0, attributes.width, attributes.height, x, y);
+    XFreePixmap(d, pixmap);
+}

@@ -13,19 +13,16 @@ class Board {
   vector<vector<Square>> squares;
   shared_ptr<TextDisplay> textDisplay;
   unique_ptr<GUI> gui;
-  // TextDisplay* textDisplay;
-  // GUI* gui;
   vector<std::pair<Move, Piece>> moveHistory;
-  // vector<Move> moveHistory;
-  vector<Move> redoHistory;
   void enPassant(Move);
   void castling(Move);
+  bool drawImage = 0;
 
  public:
   Board();
   virtual ~Board();
 
-  bool commandIntepreter(istream&, bool);
+  bool commandIntepreter(istream&, bool, bool=false);
   Piece getPiece(Position);
   bool isFirstMove(Position);
   Move previousMove();  // need this for en passant to verfiy the previous move

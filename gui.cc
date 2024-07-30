@@ -67,38 +67,9 @@ std::string GUI::getUnicodePiece(char piece) {
 //     }
 // }
 
-// displaying the chess piece images
-// void GUI::update(std::shared_ptr<TextDisplay> textDisplay) {
-//     // Clear the window by filling it with white color
-//     window.fillRectangle(0, 0, 400, 400, Xwindow::White);
-
-//     // Draw the grid
-//     for (int i = 0; i < 8; ++i) {
-//         for (int j = 0; j < 8; ++j) {
-//             int x = j * 50; // Each square is 50x50 pixels
-//             int y = i * 50;
-//             char piece = textDisplay->atPos(i, j);
-
-//             // Draw the square
-//             if ((i + j) % 2 == 0) {
-//                 window.fillRectangle(x, y, 50, 50, Xwindow::White); // White square
-//             } else {
-//                 window.fillRectangle(x, y, 50, 50, Xwindow::Green); // Black square
-//             }
-
-//             // Draw the piece
-//             if (piece != ' ' && piece != '_') {
-//                 auto it = pieceImages.find(piece);
-//                 if (it != pieceImages.end()) {
-//                     window.drawImage(x, y, it->second);
-//                 }
-//             }
-//         }
-//     }
-// }
 
 // Drawing the string
-void GUI::update(std::shared_ptr<TextDisplay> textDisplay) {
+void GUI::update(std::shared_ptr<TextDisplay> textDisplay, bool drawImage) {
     // Clear the window by filling it with white color
     window.fillRectangle(0, 0, 400, 400, Xwindow::White);
 
@@ -108,18 +79,35 @@ void GUI::update(std::shared_ptr<TextDisplay> textDisplay) {
             int x = j * 50; // Each square is 50x50 pixels
             int y = i * 50;
             char piece = textDisplay->atPos(i, j);
-            
-            // Draw the square
-            if ((i + j) % 2 == 0) {
-                window.fillRectangle(x, y, 50, 50, Xwindow::White); // White square
-            } else {
-                window.fillRectangle(x, y, 50, 50, Xwindow::Black); // Black square
-            }
-            
-            // Draw the piece
-            if (piece != ' ' && piece != '_') {
-                std::string pieceStr(1, piece);
-                window.drawString(x + 20, y + 30, pieceStr, Xwindow::Red); // Centering text within square
+
+            if(drawImage){
+                // Draw the square
+                if ((i + j) % 2 == 0) {
+                    window.fillRectangle(x, y, 50, 50, Xwindow::White); // White square
+                } else {
+                    window.fillRectangle(x, y, 50, 50, Xwindow::Green); // Black square
+                }
+
+                // Draw the piece
+                if (piece != ' ' && piece != '_') {
+                    auto it = pieceImages.find(piece);
+                    if (it != pieceImages.end()) {
+                        window.drawImage(x, y, it->second);
+                    }
+                }
+            }else{
+                // Draw the square
+                if ((i + j) % 2 == 0) {
+                    window.fillRectangle(x, y, 50, 50, Xwindow::White); // White square
+                } else {
+                    window.fillRectangle(x, y, 50, 50, Xwindow::Black); // Black square
+                }
+                
+                // Draw the piece
+                if (piece != ' ' && piece != '_') {
+                    std::string pieceStr(1, piece);
+                    window.drawString(x + 20, y + 30, pieceStr, Xwindow::Red); // Centering text within square
+                }
             }
         }
     }

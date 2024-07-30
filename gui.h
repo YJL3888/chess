@@ -13,7 +13,7 @@ class GUI {
 
 public:
     GUI();
-    void update(std::shared_ptr<TextDisplay> textDisplay);
+    void update(std::shared_ptr<TextDisplay> textDisplay, bool drawImage);
     void loadPieceImages();
     ~GUI();
 };
