@@ -151,8 +151,8 @@ void Game::play() {
         if (isWhite && p1->getPlayerType() == PlayerType::computer) {
           Move move = p1->getMove(b);
           cout << "White computer made the move "
-               << static_cast<xlocation>(move.first.first) << move.first.second
-               << " TO " << static_cast<xlocation>(move.second.first)
+               << XlocationToChar(move.first.first) << move.first.second
+               << " TO " << XlocationToChar(move.second.first)
                << move.second.second << endl;
           if (move.second.second == -1) {  // Stalemate - draw
             endGame('d');
@@ -167,8 +167,9 @@ void Game::play() {
         if (!isWhite && p2->getPlayerType() == PlayerType::computer) {
           Move move = p2->getMove(b);
           cout << "Black computer made the move "
-               << static_cast<xlocation>(move.first.first) << move.first.second
-               << " TO " << static_cast<xlocation>(move.second.first)
+               << static_cast<xlocation>(XlocationToChar(move.first.first))
+               << move.first.second << " TO "
+               << static_cast<xlocation>(XlocationToChar(move.second.first))
                << move.second.second << endl;
 
           if (move.second.second == -1) {  // Stalemate - draw
