@@ -1,20 +1,18 @@
 #ifndef GUI_H
 #define GUI_H
-#include "gui.h"
-#include <memory>
-using namespace std;
 
-class TextDisplay;
+#include "window.h"
+#include "textdisplay.h"
+#include <memory>
 
 class GUI {
-    void drawBoard();
-    int updateCount;
+    Xwindow window;
     
-    public:
-        GUI();
-        void drawPiece(char, int, int);
-        void update(shared_ptr<TextDisplay> display) {}
-        virtual ~GUI();
+public:
+    GUI();
+    void update(std::shared_ptr<TextDisplay> textDisplay);
+    ~GUI();
 };
 
 #endif
+

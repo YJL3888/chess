@@ -13,6 +13,8 @@ class Board {
   vector<vector<Square>> squares;
   shared_ptr<TextDisplay> textDisplay;
   unique_ptr<GUI> gui;
+  // TextDisplay* textDisplay;
+  // GUI* gui;
   vector<Move> moveHistory;
   vector<Move> redoHistory;
   void enPassant(Move);
