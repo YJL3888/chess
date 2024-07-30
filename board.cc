@@ -19,24 +19,7 @@ using namespace std;
 Board constructor - sets up the board with squares and textdisplay.
 TODO - Not tested yet.
 */
-Board::Board(): squares{}, textDisplay {make_shared<TextDisplay>()}, gui{new GUI} { // later add: gui{new GUI()}
-    for (int i = 1; i <= 8; ++i) {
-        squares.push_back({
-            Square(Position(A,i), nullptr, textDisplay),
-            Square(Position(B,i), nullptr, textDisplay),
-            Square(Position(C,i), nullptr, textDisplay),
-            Square(Position(D,i), nullptr, textDisplay),
-            Square(Position(E,i), nullptr, textDisplay),
-            Square(Position(F,i), nullptr, textDisplay),
-            Square(Position(G,i), nullptr, textDisplay),
-            Square(Position(H,i), nullptr, textDisplay),
-        });
-    }
-    // add this for GUI: gui->update(textDisplay);
-}
-
-// below is for no gui for faster debugging
-// Board::Board(): squares{}, textDisplay {make_shared<TextDisplay>()}{ // later add: gui{new GUI()}
+// Board::Board(): squares{}, textDisplay {make_shared<TextDisplay>()}, gui{new GUI} { // later add: gui{new GUI()}
 //     for (int i = 1; i <= 8; ++i) {
 //         squares.push_back({
 //             Square(Position(A,i), nullptr, textDisplay),
@@ -51,12 +34,29 @@ Board::Board(): squares{}, textDisplay {make_shared<TextDisplay>()}, gui{new GUI
 //     }
 //     // add this for GUI: gui->update(textDisplay);
 // }
-// ostream& operator<<(std::ostream& out, const Board& b){
-//     // out << *(b.textDisplay);
-//     // return out;
-//     // b.gui->update(b.textDisplay);
-//     return out << *b.textDisplay;
-// }
+
+// below is for no gui for faster debugging
+Board::Board(): squares{}, textDisplay {make_shared<TextDisplay>()}{ // later add: gui{new GUI()}
+    for (int i = 1; i <= 8; ++i) {
+        squares.push_back({
+            Square(Position(A,i), nullptr, textDisplay),
+            Square(Position(B,i), nullptr, textDisplay),
+            Square(Position(C,i), nullptr, textDisplay),
+            Square(Position(D,i), nullptr, textDisplay),
+            Square(Position(E,i), nullptr, textDisplay),
+            Square(Position(F,i), nullptr, textDisplay),
+            Square(Position(G,i), nullptr, textDisplay),
+            Square(Position(H,i), nullptr, textDisplay),
+        });
+    }
+    // add this for GUI: gui->update(textDisplay);
+}
+ostream& operator<<(std::ostream& out, const Board& b){
+    // out << *(b.textDisplay);
+    // return out;
+    // b.gui->update(b.textDisplay);
+    return out << *b.textDisplay;
+}
 
 Board::~Board(){
     // if using smart pointer delete this
@@ -70,12 +70,12 @@ Outputs the board.
 TODO - will need the textDisplay set up.
 TODO - Not tested yet.
 */
-ostream& operator<<(std::ostream& out, const Board& b){
-    // out << *(b.textDisplay);
-    // return out;
-    b.gui->update(b.textDisplay);
-    return out << *b.textDisplay;
-}
+// ostream& operator<<(std::ostream& out, const Board& b){
+//     // out << *(b.textDisplay);
+//     // return out;
+//     b.gui->update(b.textDisplay);
+//     return out << *b.textDisplay;
+// }
 
 /*
 TODO - not tested yet
@@ -231,45 +231,52 @@ void Board::castling(Move move) {
     }
 }
 
-void Board::enPassant(Move move) {
-    // Move is of type: pair<pair<xlocation, int>, pair<xlocation, int>>
-    // basically (x1, y1), (x2, y2)
-    // shared_ptr<ChessPiece> nextState = nullptr;
-    shared_ptr<ChessPiece> emptyState = nullptr;
+void Board::enPassant(Move move){
+    std::shared_ptr<ChessPiece> emptyState(nullptr);
 
-    int startX = static_cast<int>(move.first.first);
-    int startY = move.first.second;
+    Position firstMove = move.first;
+    Position nextMove = move.second;
+
+    Piece begin = squares[firstMove.second-1][(static_cast<int>(firstMove.first))-1].getPiece();
+    Piece end = squares[nextMove.second-1][(static_cast<int>(nextMove.first))-1].getPiece();
+
+    Piece temp;
+    Position previousMoveLocation = {static_cast<xlocation>(1),-1};
+    if(moveHistory.size()>1){
+        previousMoveLocation = this->moveHistory.end()[-2].first.second;
+    }
+    // std::cout << "move history: " << std::endl;
+    // for(const auto& moves: moveHistory){
+    //     std::cout << "Move from Position " << moves.first.first << " " << moves.first.second << " to Position: " << moves.second.first << " " << moves.second.second << std::endl;
+    // }
+    // if(moveHistory.size()>1 && previousMoveLocation.second != -1){
+    //     std::cout << "Previous Move " << this->moveHistory.end()[-2].first.first.first << " " << this->moveHistory.end()[-2].first.first.second << " to Position: " << this->moveHistory.end()[-2].first.second.first << " " << this->moveHistory.end()[-2].first.second.second << std::endl;
+    //     // std::cout << "piece type previous: " << static_cast<int>(squares[previousMoveLocation.second-1][previousMoveLocation.first-1].getPiece().first) << endl;
+    //     std::cout << "difference: " << this->moveHistory.end()[-2].first.first.second - this->moveHistory.end()[-2].first.second.second << std::endl;
+    //     std::cout << "type: " << static_cast<int>(this->moveHistory.end()[-2].second.first) << std::endl;
+    // }
+
+    // int startX = static_cast<int>(move.first.first);
+    // int startY = move.first.second;
     int endX = static_cast<int>(move.second.first);
     int endY = move.second.second;
 
-    Piece beginPeice = squares[startY-1][startX-1].getPiece();
-    Piece endPiece = squares[endY-1][endX-1].getPiece();
-    Piece temp;
+    if(begin.first == PieceType::Pawn && end.first == PieceType::Empty && (firstMove.first+1 == nextMove.first || firstMove.first-1 == nextMove.first)
+            && (firstMove.second+1 == nextMove.second || firstMove.second-1 == nextMove.second) && previousMoveLocation.second != -1 &&
+            this->moveHistory.end()[-2].second.first == PieceType::Pawn &&
+            abs(static_cast<int>(this->moveHistory.end()[-2].first.first.second - this->moveHistory.end()[-2].first.second.second)) == 2){
 
-    // Move the capturing pawn to the destination square
-    // squares[startY][startX].setState(nextState);
-    // squares[endY][endX].setState(nextState);
-
-    // Remove the captured pawn
-    // if (squares[endY][endX].getState()->getPiece().second) { // White pawn capturing
-    //     squares[endY - 1][endX].setState(emptyState);
-    // } else { // Black pawn capturing
-    //     squares[endY + 1][endX].setState(emptyState);
-    // }
-
-    if(beginPeice.first == PieceType::Pawn && endPiece.first == PieceType::Empty && (startX+1 == endX || startX-1 == endX) && (startY+1 == endY || startY-1 == endY)){
-        if(beginPeice.second == 0){
-            temp = squares[endY][endX-1].getPiece();
-            if(temp.first == PieceType::Pawn){
-                squares[endY][endX-1].setState(emptyState);
+        if (begin.second == 0) {
+            temp = squares[endY][endX - 1].getPiece();
+            if (temp.first == PieceType::Pawn) {
+                squares[endY][endX - 1].setState(emptyState);
             }
-        }
-        else{
-            temp = squares[endY-2][endX-1].getPiece();
-            if(temp.first == PieceType::Pawn){
-                squares[endY-2][endX-1].setState(emptyState);
+            } else {
+            temp = squares[endY - 2][endX - 1].getPiece();
+            if (temp.first == PieceType::Pawn) {
+                squares[endY - 2][endX - 1].setState(emptyState);
             }
-        }
+            }
     }
 }
 
@@ -300,7 +307,7 @@ bool Board::isFirstMove(Position p){
 
 Move Board::previousMove(){
     if(moveHistory.size() > 0){
-        return moveHistory.back();
+        return moveHistory.back().first;
     }
     return {{static_cast<xlocation>(1),0},{static_cast<xlocation>(1),0}}; // the default
 }
@@ -366,12 +373,12 @@ void Board::reverseMove(Move move, bool update){ // reverse the move and switch 
     squares[move.first.second-1][(static_cast<int>(move.first.first))-1].undoCheck();
 }
 
-void Board::nextMove(Move move, bool update){ // this is a helper function
+void Board::nextMove(Move move, bool update){ 
     shared_ptr<ChessPiece> nextPiece = nullptr;
     int y = move.first.second-1;
     int x = (static_cast<int>(move.first.first))-1;
     if(update){
-        moveHistory.push_back(move);
+        moveHistory.push_back(make_pair(move, getPiece(move.first)));
         enPassant(move);
         if(squares[y][x].getPiece().first == PieceType::King){
             castling(move);
@@ -379,4 +386,5 @@ void Board::nextMove(Move move, bool update){ // this is a helper function
     }
     squares[y][x].setState(nextPiece);
     squares[move.second.second-1][(static_cast<int>(move.second.first))-1].setState(nextPiece);
+    // std::cout << "move location set to: " << static_cast<int>(squares[move.second.second-1][(static_cast<int>(move.second.first))-1].getPiece().first) << std::endl;
 }
