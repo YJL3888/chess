@@ -56,7 +56,7 @@ bool Player::twoKingsLeft(Board* b, bool isWhite) {
     }
   }
 
-  std::cout << "Piece count is " << pieceCount << "\n";
+  // std::cout << "Piece count is " << pieceCount << "\n";
 
   if (pieceCount == 0) {
     return true;  // Only two kings are left on the board
