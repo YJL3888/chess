@@ -1,3 +1,4 @@
+0
 game human human
 move h2 h4
 move a7 a5

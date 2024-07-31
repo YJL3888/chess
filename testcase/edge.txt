@@ -1,3 +1,4 @@
+0
 game human human
 move e2 e4
 move d7 d5
