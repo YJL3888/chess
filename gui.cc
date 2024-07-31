@@ -7,18 +7,21 @@ GUI::GUI() : window(400, 400) {  // Initialize the window with a 400x400 size
 }
 
 void GUI::loadPieceImages() {
-  pieceImages['P'] = "pictures/pawnw.xpm";
-  pieceImages['R'] = "pictures/rookw.xpm";
-  pieceImages['N'] = "pictures/knightw.xpm";
-  pieceImages['B'] = "pictures/bishopw.xpm";
-  pieceImages['Q'] = "pictures/queenw.xpm";
-  pieceImages['K'] = "pictures/kingw.xpm";
-  pieceImages['p'] = "pictures/pawnb.xpm";
-  pieceImages['r'] = "pictures/rookb.xpm";
-  pieceImages['n'] = "pictures/knightb.xpm";
-  pieceImages['b'] = "pictures/bishopb.xpm";
-  pieceImages['q'] = "pictures/queenb.xpm";
-  pieceImages['k'] = "pictures/kingb.xpm";
+  // Assuming the executable is run from the 'chess' directory
+  std::string basePath = "pictures/";
+
+  pieceImages['P'] = basePath + "pawnw.xpm";
+  pieceImages['R'] = basePath + "rookw.xpm";
+  pieceImages['N'] = basePath + "knightw.xpm";
+  pieceImages['B'] = basePath + "bishopw.xpm";
+  pieceImages['Q'] = basePath + "queenw.xpm";
+  pieceImages['K'] = basePath + "kingw.xpm";
+  pieceImages['p'] = basePath + "pawnb.xpm";
+  pieceImages['r'] = basePath + "rookb.xpm";
+  pieceImages['n'] = basePath + "knightb.xpm";
+  pieceImages['b'] = basePath + "bishopb.xpm";
+  pieceImages['q'] = basePath + "queenb.xpm";
+  pieceImages['k'] = basePath + "kingb.xpm";
 }
 
 std::string GUI::getUnicodePiece(char piece) {
