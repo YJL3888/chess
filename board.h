@@ -16,7 +16,7 @@ class Board {
   vector<std::pair<Move, Piece>> moveHistory;
   void enPassant(Move);
   void castling(Move);
-  bool drawImage = 0;
+  int drawImage = 0;
 
  public:
   Board();
