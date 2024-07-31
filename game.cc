@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <memory>
 
 #include "level1.h"
 #include "level2.h"
@@ -12,7 +13,7 @@
 using namespace std;
 
 Game::Game()
-    : b{new Board()},
+    : b{std::make_unique<Board>()},
       p1{nullptr},
       p2{nullptr},
       isWhite{true},
@@ -50,8 +51,7 @@ void Game::endGame(char status) {
     }
   }
 
-  delete b;
-  b = new Board{};
+  b = std::make_unique<Board>();
 
   startGame = false;
   isWhite = 1;
@@ -60,23 +60,23 @@ void Game::endGame(char status) {
 // NEED TO IMPLEMENT THIS
 // We need this because we put the different levels as inheritance instead in
 // one class We can change this if we want
-Player* Game::ComputerDifficulty(int difficulty, bool isWhite) {
-  Player* computerPlayer;
+std::unique_ptr<Player> Game::ComputerDifficulty(int difficulty, bool isWhite) {
+  std::unique_ptr<Player> computerPlayer;
   switch (difficulty) {
     case 1:
-      computerPlayer = new Level1(isWhite);
+      computerPlayer = std::make_unique<Level1>(isWhite);
       break;
     case 2:
-      computerPlayer = new Level2(isWhite);
+      computerPlayer = std::make_unique<Level2>(isWhite);
       break;
     case 3:
-      computerPlayer = new Level3(isWhite);
+      computerPlayer = std::make_unique<Level3>(isWhite);
       break;
     case 4:
-      computerPlayer = new Level4(isWhite);
+      computerPlayer = std::make_unique<Level4>(isWhite);
       break;
     default:
-      computerPlayer = new Level1(isWhite);
+      computerPlayer = std::make_unique<Level1>(isWhite);
       break;
   }
   return computerPlayer;
@@ -149,17 +149,11 @@ void Game::play() {
       cin >> p1Type >> p2Type;
       // check if p1 and p2 contain existing players, delete if not null => give
       // space to create new players.
-      if (p1) {
-        delete p1;
-      }
-      if (p2) {
-        delete p2;
-      }
-      // delete p1;
-      // delete p2;
+      p1.reset();
+      p2.reset();
 
       if (p1Type == "human") {
-        p1 = new HumanPlayer(true);
+        p1 = std::make_unique<HumanPlayer>(true);
       }  // true means white
       else {
         if (p1Type.back() - '0' < 1 ||
@@ -176,7 +170,7 @@ void Game::play() {
       }
 
       if (p2Type == "human") {
-        p2 = new HumanPlayer(false);
+        p2 = std::make_unique<HumanPlayer>(false);
       }  // false means black
       else {
         if (p2Type.back() - '0' < 1 ||
@@ -201,7 +195,7 @@ void Game::play() {
     else if (startGame) {
       if (command == "move") {
         if (isWhite && p1->getPlayerType() == PlayerType::computer) {
-          Move move = p1->getMove(b);
+          Move move = p1->getMove(b.get());
           totalMoves++;
           cout << "White computer made the move "
                << XlocationToChar(move.first.first) << move.first.second
@@ -219,7 +213,7 @@ void Game::play() {
         }
 
         if (!isWhite && p2->getPlayerType() == PlayerType::computer) {
-          Move move = p2->getMove(b);
+          Move move = p2->getMove(b.get());
           totalMoves++;
           cout << "Black computer made the move "
                << XlocationToChar(move.first.first) << move.first.second
@@ -239,7 +233,7 @@ void Game::play() {
 
         if (!isWhite && p2->getPlayerType() == PlayerType::human) {
           cout << "Human (black side) is making a move" << endl;
-          Move move = p2->getMove(b);
+          Move move = p2->getMove(b.get());
           totalMoves++;
           cout<< "Made " << totalMoves << " move(s) in total! Go Go!" << std::endl;
           if (move.second.second == -1) {  // Stalemate - draw
@@ -254,7 +248,7 @@ void Game::play() {
 
         if (isWhite && p1->getPlayerType() == PlayerType::human) {
           cout << "Human (white side)  is making a move" << endl;
-          Move move = p1->getMove(b);
+          Move move = p1->getMove(b.get());
           totalMoves++;
           cout<< "Made " << totalMoves << " move(s) in total! Go Go!" << std::endl;
           if (move.second.second == -1) {  // Stalemate - draw
@@ -316,8 +310,4 @@ void Game::play() {
   cout << "Black: " << p2Score << endl;
 }
 
-Game::~Game() {
-  delete b;
-  delete p1;
-  delete p2;
-}
+Game::~Game() = default;
