@@ -20,7 +20,7 @@ Game::Game()
       checkmate{false},
       startGame{false},
       p1Score{0},
-      p2Score{0} {}
+      p2Score{0}{}
 
 void Game::endGame(char status) {
   cout << *b << endl;  // print the board
@@ -52,6 +52,7 @@ void Game::endGame(char status) {
   }
 
   b = std::make_unique<Board>();
+  totalMoves = 0;
 
   startGame = false;
   isWhite = 1;
