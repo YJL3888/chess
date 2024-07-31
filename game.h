@@ -2,6 +2,8 @@
 #define GAME_H
 
 #include <vector>
+#include <memory>
+#include <chrono>
 #include "board.h"
 #include "player.h"
 #include "computerplayer.h"
@@ -20,12 +22,19 @@ class Game {
     std::unique_ptr<Player> ComputerDifficulty(int difficulty, bool isWhite);
     int totalMoves = 0;
 
+    std::chrono::time_point<std::chrono::steady_clock> startTime;
+    std::chrono::time_point<std::chrono::steady_clock> endTime;
+    int whiteTimeLeft; // time left for white player in seconds
+    int blackTimeLeft; // time left for black player in seconds
+    bool timeControl; // flag to check if time control is enabled
+
   public:
     Game();
     virtual ~Game();
     void play();
-    void undo();
-    void redo();
+    void startTimer();
+    void endTimer();
+    void displayTime();
     // void ComputerDifficulty(int difficulty, Player*& computerPlayer, bool isWhite);
 };
 

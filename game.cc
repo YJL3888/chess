@@ -4,6 +4,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <chrono>
 
 #include "level1.h"
 #include "level2.h"
@@ -21,7 +22,11 @@ Game::Game()
       checkmate{false},
       startGame{false},
       p1Score{0},
-      p2Score{0} {}
+      p2Score{0},
+      whiteTimeLeft{0},
+      blackTimeLeft{0},
+      timeControl{false}
+{}
 
 void Game::endGame(char status) {
   cout << *b << endl;  // print the board
@@ -64,6 +69,16 @@ void Game::endGame(char status) {
     }
   }
 
+  if (status == 't') {
+    if (isWhite) {
+      ++p2Score;
+      cout << "White ran out of time! Black player won! Hurry up white player :/" << endl;
+    } else {
+      ++p1Score;
+      cout << "Black ran out of time! White player won! Hurry up black player :/" << endl;
+    }
+  }
+
   b = std::make_unique<Board>();
   totalMoves = 0;
 
@@ -71,9 +86,6 @@ void Game::endGame(char status) {
   isWhite = 1;
 }
 
-// NEED TO IMPLEMENT THIS
-// We need this because we put the different levels as inheritance instead in
-// one class We can change this if we want
 std::unique_ptr<Player> Game::ComputerDifficulty(int difficulty, bool isWhite) {
   std::unique_ptr<Player> computerPlayer;
   switch (difficulty) {
@@ -97,6 +109,35 @@ std::unique_ptr<Player> Game::ComputerDifficulty(int difficulty, bool isWhite) {
       break;
   }
   return computerPlayer;
+}
+
+void Game::startTimer() {
+  startTime = std::chrono::steady_clock::now();
+}
+
+void Game::endTimer() {
+  endTime = std::chrono::steady_clock::now();
+  auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime).count();
+  if (isWhite) {
+    whiteTimeLeft -= elapsed;
+    if (whiteTimeLeft <= 0) {
+      endGame('t');
+      return;
+    }
+  } else {
+    blackTimeLeft -= elapsed;
+    if (blackTimeLeft <= 0) {
+      endGame('t');
+      return;
+    }
+  }
+  displayTime();
+}
+
+void Game::displayTime() {
+  cout << "White Time Left: " << whiteTimeLeft / 60 << " minutes " << whiteTimeLeft % 60 << " seconds" << endl;
+  cout << "Black Time Left: " << blackTimeLeft / 60 << " minutes " << blackTimeLeft % 60 << " seconds" << endl;
+  cout << "Time used for this move: " << chrono::duration_cast<chrono::seconds>(endTime - startTime).count() << " seconds" << endl;
 }
 
 void Game::play() {
@@ -131,21 +172,6 @@ void Game::play() {
   std::cout << "Bonus Marks +1000 " << std::endl;
   std::cout << std::endl;
 
-  // // option to output images or the chess strings
-  // std::cout << "Would you like to output the chess piece image? (yes/no)" <<
-  // std::endl; while(cin >> outputImage){
-  //   if(outputImage != "yes" && outputImage != "no"){
-  //     std::cout << "Invalid input! You should enter yes or no :/" <<
-  //     std::endl;
-  //   }else{
-  //     if(outputImage == "yes"){
-  //       printImage = 1;
-  //     }
-  //     break;
-  //   }
-  // }
-  // cout<< "You can enter your commands now :)" << endl;
-
   cout << "You can enter your commands now :)" << endl;
 
   while (cin >> command) {
@@ -166,53 +192,73 @@ void Game::play() {
         b->commandIntepreter(defaultSetUp, 0, printImage);
       }
       cin >> p1Type >> p2Type;
-      // check if p1 and p2 contain existing players, delete if not null => give
-      // space to create new players.
       p1.reset();
       p2.reset();
 
       if (p1Type == "human") {
         p1 = std::make_unique<HumanPlayer>(true);
-      }  // true means white
-      else {
-        if (p1Type.back() - '0' < 1 ||
-            p1Type.back() - '0' > 5) {  // invalid computer level.
+      } else {
+        if (p1Type.back() - '0' < 1 || p1Type.back() - '0' > 5) {
           cout << "Invalid level for player 1. The computer difficulty needs "
                   "to be in between 1-4 inclusive, difficulty default set to 1"
                << endl;
           difficulty = 1;
-        } else {  // valid computer level.
+        } else {
           difficulty = p1Type.back() - '0';
         }
-        // ComputerDifficulty(difficulty, p1, true);  // true means white
         p1 = ComputerDifficulty(difficulty, true);
       }
 
       if (p2Type == "human") {
         p2 = std::make_unique<HumanPlayer>(false);
-      }  // false means black
-      else {
-        if (p2Type.back() - '0' < 1 ||
-            p2Type.back() - '0' > 5) {  // invalid computer level.
+      } else {
+        if (p2Type.back() - '0' < 1 || p2Type.back() - '0' > 5) {
           cout << "Invalid level for player 2. The computer difficulty needs "
                   "to be in between 1-4 inclusive, difficulty default set to 1"
                << endl;
           difficulty = 1;
-        } else {  // valid computer level.
+        } else {
           difficulty = p2Type.back() - '0';
         }
-        // ComputerDifficulty(difficulty, p2, false);  // false means black
         p2 = ComputerDifficulty(difficulty, false);
       }
 
-      // STARTING GAME!
+      // Time control option!!
+      string timeControlOption = "no";
+      timeControl = false;
+      if(p1Type == "human" && p2Type == "human"){
+        cout << "We have two human players! Would you like to have time control? (yes/no)" << endl;
+        while(cin >> timeControlOption){
+          if(timeControlOption != "yes" && timeControlOption != "no"){
+            std::cout << "Invalid input! You should enter yes or no :/" << std::endl;
+          }else{
+            if(timeControlOption == "yes"){
+              timeControl = true;
+            }
+            break;
+          }
+        }
+      }
+
+      if(timeControl){
+        int minutes;
+        cout << "Enter your time control in minutes: ";
+        cin >> minutes;
+        whiteTimeLeft = minutes * 60;
+        blackTimeLeft = minutes * 60;
+      }
+
       startGame = true;
       cout << *b << endl;
+      if (timeControl) startTimer();
     }
 
     // CASE WHEN THERE IS ACTIVE GAME
     else if (startGame) {
       if (command == "move") {
+        if (timeControl) endTimer();
+        if (!startGame) continue; // If the game ended due to time out, skip processing the move
+
         if (isWhite && p1->getPlayerType() == PlayerType::computer) {
           Move move = p1->getMove(b.get());
           totalMoves++;
@@ -291,6 +337,7 @@ void Game::play() {
         isWhite = !isWhite;
         isWhite ? cout << "White's turn" << endl
                 : cout << "Black's turn" << endl;
+        if (timeControl) startTimer();
       }
 
       if (command == "resign") {
@@ -305,7 +352,6 @@ void Game::play() {
       }
     }
 
-    // moving
     else if (command == "move") {
       cout << "Invalid command. Game is not initalized yet!" << endl;
     } else if (command == "setup") {
