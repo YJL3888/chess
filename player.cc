@@ -26,6 +26,7 @@ bool Player::isCheckMate(Board* b, bool isWhite) {
 
 bool Player::isStaleMate(Board* b, bool isWhite) {
   vector<PotentialMoves> Moves = b->allPotentialMoves(isWhite);
+
   for (auto move : Moves) {
     for (auto second : move.second) {
       if (!b->inCheck(isWhite) &&
@@ -36,4 +37,29 @@ bool Player::isStaleMate(Board* b, bool isWhite) {
     }
   }
   return true;  // king not in check & no legal move
+}
+
+bool Player::twoKingsLeft(Board* b, bool isWhite) {
+  vector<PotentialMoves> Moves = b->allPotentialMoves(isWhite);
+  vector<PotentialMoves> opponent = b->allPotentialMoves(!isWhite);
+  int pieceCount = 0;
+  for (auto move : Moves) {
+    if (b->getPiece(move.first).first != PieceType::Empty &&
+        b->getPiece(move.first).first != PieceType::King) {
+      pieceCount++;
+    }
+  }
+  for (auto move : opponent) {
+    if (b->getPiece(move.first).first != PieceType::Empty &&
+        b->getPiece(move.first).first != PieceType::King) {
+      pieceCount++;
+    }
+  }
+
+  std::cout << "Piece count is " << pieceCount << "\n";
+
+  if (pieceCount == 0) {
+    return true;  // Only two kings are left on the board
+  }
+  return false;
 }

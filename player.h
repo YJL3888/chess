@@ -17,6 +17,7 @@ class Player {
   virtual ~Player() {};
   bool isCheckMate(Board*, bool);
   bool isStaleMate(Board*, bool);
+  bool twoKingsLeft(Board*, bool);
   virtual Move getMove(Board* b) = 0;  // move is a pair of positions
 
   // need something to support: Player p1->getPlayerType() that returns
