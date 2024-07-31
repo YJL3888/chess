@@ -1,5 +1,6 @@
 0
 game human human
+no
 move h2 h4
 move a7 a5
 move h4 h5
