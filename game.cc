@@ -27,6 +27,7 @@ void Game::endGame(char status) {
 
   if (status == 'd') {
     cout << "Stalemate! The game is a draw!" << endl;
+    cout<< "Made " << totalMoves << " move(s) in total! Good Game!" << std::endl;
     p1Score += 0.5;
     p2Score += 0.5;
   }
@@ -35,9 +36,11 @@ void Game::endGame(char status) {
     if (isWhite) {
       ++p1Score;
       cout << "Checkmate! White player won!" << endl;
+      cout<< "Made " << totalMoves << " move(s) in total! Black player you are so close :(" << std::endl;
     } else {
       ++p2Score;
       cout << "Checkmate! Black player won!" << endl;
+      cout<< "Made " << totalMoves << " move(s) in total! White player you are so close :(" << std::endl;
     }
   }
 
@@ -45,9 +48,11 @@ void Game::endGame(char status) {
     if (isWhite) {
       ++p1Score;
       cout << "Black Resigned! White player won!" << endl;
+      cout<< "Made " << totalMoves << " move(s) in total! Can't believe black resigned :(" << std::endl;
     } else {
       ++p2Score;
       cout << "White Resigned! Black player won!" << endl;
+      cout<< "Made " << totalMoves << " move(s) in total! Can't believe white resigned :(" << std::endl;
     }
   }
 
