@@ -102,6 +102,11 @@ Move ComputerPlayer::getMove(Board* b) {
     std::cout << (isWhite ? "White" : "Black") << " is in check" << endl;
   }
 
+  if (twoKingsLeft(b, isWhite)) {
+    // stalemate
+    return std::make_pair(std::make_pair(Y, -1), std::make_pair(Y, -1));
+  }
+
   if (isCheckMate(b, isWhite)) {
     if (isStaleMate(b, isWhite)) {
       // stalemate
