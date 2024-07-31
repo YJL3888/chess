@@ -18,6 +18,7 @@ class Game {
     float p1Score, p2Score;
     void endGame(char);
     Player* ComputerDifficulty(int difficulty, bool isWhite);
+    int totalMoves = 0;
 
   public:
     Game();

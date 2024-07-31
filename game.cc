@@ -202,10 +202,12 @@ void Game::play() {
       if (command == "move") {
         if (isWhite && p1->getPlayerType() == PlayerType::computer) {
           Move move = p1->getMove(b);
+          totalMoves++;
           cout << "White computer made the move "
                << XlocationToChar(move.first.first) << move.first.second
                << " TO " << XlocationToChar(move.second.first)
                << move.second.second << endl;
+          cout<< "Made " << totalMoves << " move(s) in total! Go Go!" << std::endl;
           if (move.second.second == -1) {  // Stalemate - draw
             endGame('d');
             continue;
@@ -218,10 +220,12 @@ void Game::play() {
 
         if (!isWhite && p2->getPlayerType() == PlayerType::computer) {
           Move move = p2->getMove(b);
+          totalMoves++;
           cout << "Black computer made the move "
                << XlocationToChar(move.first.first) << move.first.second
                << " TO " << XlocationToChar(move.second.first)
                << move.second.second << endl;
+          cout<< "Made " << totalMoves << " move(s) in total! Go Go!" << std::endl;
 
           if (move.second.second == -1) {  // Stalemate - draw
             endGame('d');
@@ -236,6 +240,8 @@ void Game::play() {
         if (!isWhite && p2->getPlayerType() == PlayerType::human) {
           cout << "Human (black side) is making a move" << endl;
           Move move = p2->getMove(b);
+          totalMoves++;
+          cout<< "Made " << totalMoves << " move(s) in total! Go Go!" << std::endl;
           if (move.second.second == -1) {  // Stalemate - draw
             endGame('d');
             continue;
@@ -249,6 +255,8 @@ void Game::play() {
         if (isWhite && p1->getPlayerType() == PlayerType::human) {
           cout << "Human (white side)  is making a move" << endl;
           Move move = p1->getMove(b);
+          totalMoves++;
+          cout<< "Made " << totalMoves << " move(s) in total! Go Go!" << std::endl;
           if (move.second.second == -1) {  // Stalemate - draw
             endGame('d');
             continue;
