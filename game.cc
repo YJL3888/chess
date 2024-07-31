@@ -1,14 +1,15 @@
 #include "game.h"
 
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <string>
-#include <memory>
 
 #include "level1.h"
 #include "level2.h"
 #include "level3.h"
 #include "level4.h"
+#include "level5.h"
 #include "types.h"
 using namespace std;
 
@@ -20,14 +21,15 @@ Game::Game()
       checkmate{false},
       startGame{false},
       p1Score{0},
-      p2Score{0}{}
+      p2Score{0} {}
 
 void Game::endGame(char status) {
   cout << *b << endl;  // print the board
 
   if (status == 'd') {
     cout << "Stalemate! The game is a draw!" << endl;
-    cout<< "Made " << totalMoves << " move(s) in total! Good Game!" << std::endl;
+    cout << "Made " << totalMoves << " move(s) in total! Good Game!"
+         << std::endl;
     p1Score += 0.5;
     p2Score += 0.5;
   }
@@ -36,11 +38,15 @@ void Game::endGame(char status) {
     if (isWhite) {
       ++p1Score;
       cout << "Checkmate! White player won!" << endl;
-      cout<< "Made " << totalMoves << " move(s) in total! Black player you are so close :(" << std::endl;
+      cout << "Made " << totalMoves
+           << " move(s) in total! Black player you are so close :("
+           << std::endl;
     } else {
       ++p2Score;
       cout << "Checkmate! Black player won!" << endl;
-      cout<< "Made " << totalMoves << " move(s) in total! White player you are so close :(" << std::endl;
+      cout << "Made " << totalMoves
+           << " move(s) in total! White player you are so close :("
+           << std::endl;
     }
   }
 
@@ -48,11 +54,13 @@ void Game::endGame(char status) {
     if (isWhite) {
       ++p1Score;
       cout << "Black Resigned! White player won!" << endl;
-      cout<< "Made " << totalMoves << " move(s) in total! Can't believe black resigned :(" << std::endl;
+      cout << "Made " << totalMoves
+           << " move(s) in total! Can't believe black resigned :(" << std::endl;
     } else {
       ++p2Score;
       cout << "White Resigned! Black player won!" << endl;
-      cout<< "Made " << totalMoves << " move(s) in total! Can't believe white resigned :(" << std::endl;
+      cout << "Made " << totalMoves
+           << " move(s) in total! Can't believe white resigned :(" << std::endl;
     }
   }
 
@@ -81,6 +89,9 @@ std::unique_ptr<Player> Game::ComputerDifficulty(int difficulty, bool isWhite) {
     case 4:
       computerPlayer = std::make_unique<Level4>(isWhite);
       break;
+    case 5:
+      computerPlayer = std::make_unique<Level5>(isWhite);
+      break;
     default:
       computerPlayer = std::make_unique<Level1>(isWhite);
       break;
@@ -100,15 +111,15 @@ void Game::play() {
   std::cout << "0. No graphical display updates" << std::endl;
   std::cout << "1. Graphical display with strings/letters" << std::endl;
   std::cout << "2. Graphical display with images" << std::endl;
-  while(cin >> outputImage){
-    if(outputImage != "0" && outputImage != "1" && outputImage != "2"){
+  while (cin >> outputImage) {
+    if (outputImage != "0" && outputImage != "1" && outputImage != "2") {
       std::cout << "Invalid input! You should enter 0, 1, or 2 :/" << std::endl;
-    }else{
-      if(outputImage == "0"){
+    } else {
+      if (outputImage == "0") {
         printImage = 0;
-      }else if(outputImage == "1"){
+      } else if (outputImage == "1") {
         printImage = 1;
-      }else{
+      } else {
         printImage = 2;
       }
       break;
@@ -121,10 +132,11 @@ void Game::play() {
   std::cout << std::endl;
 
   // // option to output images or the chess strings
-  // std::cout << "Would you like to output the chess piece image? (yes/no)" << std::endl;
-  // while(cin >> outputImage){
+  // std::cout << "Would you like to output the chess piece image? (yes/no)" <<
+  // std::endl; while(cin >> outputImage){
   //   if(outputImage != "yes" && outputImage != "no"){
-  //     std::cout << "Invalid input! You should enter yes or no :/" << std::endl;
+  //     std::cout << "Invalid input! You should enter yes or no :/" <<
+  //     std::endl;
   //   }else{
   //     if(outputImage == "yes"){
   //       printImage = 1;
@@ -133,12 +145,13 @@ void Game::play() {
   //   }
   // }
   // cout<< "You can enter your commands now :)" << endl;
-  
-  cout<< "You can enter your commands now :)" << endl;
+
+  cout << "You can enter your commands now :)" << endl;
 
   while (cin >> command) {
     // CASE WHEN NO ACTIVE GAME
-    if (startGame == false && command == "game") {  // game white-player black-player
+    if (startGame == false &&
+        command == "game") {  // game white-player black-player
       if (setUpMode == 0) {
         stringstream defaultSetUp;
         defaultSetUp
@@ -163,7 +176,7 @@ void Game::play() {
       }  // true means white
       else {
         if (p1Type.back() - '0' < 1 ||
-            p1Type.back() - '0' > 4) {  // invalid computer level.
+            p1Type.back() - '0' > 5) {  // invalid computer level.
           cout << "Invalid level for player 1. The computer difficulty needs "
                   "to be in between 1-4 inclusive, difficulty default set to 1"
                << endl;
@@ -180,7 +193,7 @@ void Game::play() {
       }  // false means black
       else {
         if (p2Type.back() - '0' < 1 ||
-            p2Type.back() - '0' > 4) {  // invalid computer level.
+            p2Type.back() - '0' > 5) {  // invalid computer level.
           cout << "Invalid level for player 2. The computer difficulty needs "
                   "to be in between 1-4 inclusive, difficulty default set to 1"
                << endl;
@@ -207,7 +220,8 @@ void Game::play() {
                << XlocationToChar(move.first.first) << move.first.second
                << " TO " << XlocationToChar(move.second.first)
                << move.second.second << endl;
-          cout<< "Made " << totalMoves << " move(s) in total! Go Go!" << std::endl;
+          cout << "Made " << totalMoves << " move(s) in total! Go Go!"
+               << std::endl;
           if (move.second.second == -1) {  // Stalemate - draw
             endGame('d');
             continue;
@@ -225,7 +239,8 @@ void Game::play() {
                << XlocationToChar(move.first.first) << move.first.second
                << " TO " << XlocationToChar(move.second.first)
                << move.second.second << endl;
-          cout<< "Made " << totalMoves << " move(s) in total! Go Go!" << std::endl;
+          cout << "Made " << totalMoves << " move(s) in total! Go Go!"
+               << std::endl;
 
           if (move.second.second == -1) {  // Stalemate - draw
             endGame('d');
@@ -241,7 +256,8 @@ void Game::play() {
           cout << "Human (black side) is making a move" << endl;
           Move move = p2->getMove(b.get());
           totalMoves++;
-          cout<< "Made " << totalMoves << " move(s) in total! Go Go!" << std::endl;
+          cout << "Made " << totalMoves << " move(s) in total! Go Go!"
+               << std::endl;
           if (move.second.second == -1) {  // Stalemate - draw
             endGame('d');
             continue;
@@ -256,7 +272,8 @@ void Game::play() {
           cout << "Human (white side)  is making a move" << endl;
           Move move = p1->getMove(b.get());
           totalMoves++;
-          cout<< "Made " << totalMoves << " move(s) in total! Go Go!" << std::endl;
+          cout << "Made " << totalMoves << " move(s) in total! Go Go!"
+               << std::endl;
           if (move.second.second == -1) {  // Stalemate - draw
             endGame('d');
             continue;
@@ -292,14 +309,17 @@ void Game::play() {
     else if (command == "move") {
       cout << "Invalid command. Game is not initalized yet!" << endl;
     } else if (command == "setup") {
-      cout << "Would you like to display the setup everytime you modify the board? (yes/no)" << endl;
+      cout << "Would you like to display the setup everytime you modify the "
+              "board? (yes/no)"
+           << endl;
       string displaySetup = "no";
       bool printSetup = 0;
-      while(cin >> displaySetup){
-        if(displaySetup != "yes" && displaySetup != "no"){
-          std::cout << "Invalid input! You should enter yes or no :/" << std::endl;
-        }else{
-          if(displaySetup == "yes"){
+      while (cin >> displaySetup) {
+        if (displaySetup != "yes" && displaySetup != "no") {
+          std::cout << "Invalid input! You should enter yes or no :/"
+                    << std::endl;
+        } else {
+          if (displaySetup == "yes") {
             printSetup = 1;
           }
           break;
