@@ -1,6 +1,5 @@
 #include "humanplayer.h"
 
-
 #include <iostream>
 
 #include "types.h"
@@ -13,12 +12,13 @@ HumanPlayer::~HumanPlayer() {}
 
 bool HumanPlayer::isValidMove(Board* b, Move move) const {
   std::vector<PotentialMoves> potentialMoves = b->allPotentialMoves(isWhite);
-  // std::cout << "The move we have is from " << move.first.first << " " << move.first.second << " to " << move.second.first << " " << move.second.second << std::endl;
-  // for testing purposes
-  // std::cout << "I am in isValidMove" << std::endl;
-  // for(const auto& moves: potentialMoves){
-  //   std::cout << "Move from Position " << moves.first.first << " " << moves.first.second << " to Positions: " << std::endl;
-  //   for(const auto& end: moves.second){
+  // std::cout << "The move we have is from " << move.first.first << " " <<
+  // move.first.second << " to " << move.second.first << " " <<
+  // move.second.second << std::endl; for testing purposes std::cout << "I am in
+  // isValidMove" << std::endl; for(const auto& moves: potentialMoves){
+  //   std::cout << "Move from Position " << moves.first.first << " " <<
+  //   moves.first.second << " to Positions: " << std::endl; for(const auto&
+  //   end: moves.second){
   //     std::cout << end.first << " " << end.second << std::endl;
   //   }
   // }
@@ -105,6 +105,11 @@ Move HumanPlayer::getMove(Board* b) {
       } else {
         std::cout << "White player is in check\n";
       }
+    }
+    if (twoKingsLeft(b, isWhite)) {
+      Move stalemate =
+          std::make_pair(std::make_pair(Y, -1), std::make_pair(Y, -1));
+      return stalemate;
     }
     if (isCheckMate(b, this->isWhite)) {
       if (isStaleMate(b, this->isWhite)) {
